@@ -1,0 +1,8 @@
+{
+  "name": "Rajesh.exe // Computer Engineer Portfolio",
+  "description": "A high-energy, Gen-Z inspired portfolio for a Computer Engineer from Nepal, featuring a bento-style layout, interactive terminal, and Gemini-powered professional assistant.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
