@@ -9,7 +9,7 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "c9115b88-1763-4903-b054-97274640196c"); 
+    formData.append("access_key", "c9115b88-1763-4903-b054-97274640196c");
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -32,51 +32,51 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <div className="obsidian-panel p-8 sm:p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden group premium-glow">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 blur-3xl"></div>
-      <h3 className="mono text-xs font-black mb-10 text-cyan-400 uppercase tracking-[0.4em] flex items-center gap-3">
-        <span className="w-3 h-3 rounded-sm bg-cyan-500 animate-pulse"></span>
+    <div className="obsidian-card p-10 rounded-[3rem] border border-white/5 relative overflow-hidden group">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] blur-[100px] rounded-full"></div>
+      <h3 className="mono text-[10px] font-black mb-12 text-slate-200 uppercase tracking-[0.4em] flex items-center gap-3">
+        <span className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></span>
         Establish_Link
       </h3>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
         <input type="hidden" name="from_name" value="RaaZ Portfolio Hub" />
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-8">
           <div className="group/field">
-            <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-2 tracking-[0.3em] group-focus-within/field:text-cyan-400 transition-colors">Identifier</label>
-            <input 
-              name="name" 
-              required 
+            <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-3 tracking-[0.4em] group-focus-within/field:text-white transition-colors">Identifier</label>
+            <input
+              name="name"
+              required
               placeholder="Name or Alias"
-              className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-xs focus:border-cyan-500 outline-none transition-all placeholder:text-slate-800 hover:border-white/10"
+              className="w-full bg-[#0a0a0c] border border-white/5 rounded-2xl px-6 py-4.5 text-[11px] focus:border-white/20 outline-none transition-all placeholder:text-slate-800 hover:border-white/10 text-white"
             />
           </div>
           <div className="group/field">
-            <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-2 tracking-[0.3em] group-focus-within/field:text-cyan-400 transition-colors">Channel (Email)</label>
-            <input 
-              type="email" 
-              name="email" 
-              required 
+            <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-3 tracking-[0.4em] group-focus-within/field:text-white transition-colors">Channel (Email)</label>
+            <input
+              type="email"
+              name="email"
+              required
               placeholder="user@domain.xyz"
-              className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-xs focus:border-cyan-500 outline-none transition-all placeholder:text-slate-800 hover:border-white/10"
+              className="w-full bg-[#0a0a0c] border border-white/5 rounded-2xl px-6 py-4.5 text-[11px] focus:border-white/20 outline-none transition-all placeholder:text-slate-800 hover:border-white/10 text-white"
             />
           </div>
         </div>
         <div className="group/field">
-          <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-2 tracking-[0.3em] group-focus-within/field:text-cyan-400 transition-colors">Data_Payload</label>
-          <textarea 
-            name="message" 
-            required 
+          <label className="block text-[8px] mono text-slate-600 font-black uppercase mb-3 tracking-[0.4em] group-focus-within/field:text-white transition-colors">Data_Payload</label>
+          <textarea
+            name="message"
+            required
             rows={4}
             placeholder="Initialize conversation sequence..."
-            className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-xs focus:border-cyan-500 outline-none transition-all resize-none placeholder:text-slate-800 hover:border-white/10 min-h-[140px]"
+            className="w-full bg-[#0a0a0c] border border-white/5 rounded-2xl px-6 py-4.5 text-[11px] focus:border-white/20 outline-none transition-all resize-none placeholder:text-slate-800 hover:border-white/10 text-white min-h-[160px]"
           ></textarea>
         </div>
-        <button 
+        <button
           disabled={loading}
-          className="w-full py-4 bg-cyan-500 text-slate-950 font-black rounded-2xl hover:brightness-110 active:scale-95 disabled:opacity-50 transition-all flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/20 text-[10px] uppercase tracking-[0.5em]"
+          className="w-full py-5 bg-white text-black font-black rounded-2xl hover:bg-slate-200 active:scale-[0.98] disabled:opacity-50 transition-all flex items-center justify-center gap-4 shadow-2xl text-[10px] uppercase tracking-[0.6em]"
         >
           {loading ? (
-            <div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin"></div>
+            <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
           ) : 'Transmit_Data'}
         </button>
         {status && (
