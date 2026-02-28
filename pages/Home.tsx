@@ -75,7 +75,7 @@ const Home: React.FC = () => {
             <div className="fixed inset-0 bg-[#030303] z-[999] flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-                    <span className="mono text-[10px] text-cyan-500 tracking-[0.5em] animate-pulse">INIT_HUB</span>
+                    <span className="mono text-[11px] text-cyan-500 tracking-[0.5em] animate-pulse">INIT_HUB</span>
                 </div>
             </div>
         );
@@ -88,20 +88,20 @@ const Home: React.FC = () => {
             <header className={`fixed left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 flex justify-center items-start pt-6 ${scrolled ? 'top-0 pt-4 w-[95%] max-w-5xl opacity-95 backdrop-blur-3xl' : 'w-[92%] max-w-5xl'}`}>
                 <div className={`obsidian-card rounded-2xl h-14 w-full flex items-center justify-between px-6 border-cyan-500/10 transition-all duration-500 ${scrolled ? 'bg-black/80 border-cyan-500/20 shadow-lg shadow-cyan-900/20 scale-[1.01]' : ''}`}>
                     <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center font-black text-black text-[10px]">RK</div>
+                        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center font-black text-black text-[11px]">RK</div>
                         <div className="hidden sm:flex flex-col">
-                            <span className="text-[10px] font-black tracking-tight leading-none uppercase text-white">Neural Hub</span>
-                            <span className="text-[7px] mono text-cyan-500 font-bold uppercase tracking-widest mt-0.5">RaaZ.Khanal.os</span>
+                            <span className="text-[11px] font-black tracking-tight leading-none uppercase text-white">Neural Hub</span>
+                            <span className="text-[8px] mono text-cyan-500 font-bold uppercase tracking-widest mt-0.5">RaaZ.Khanal.os</span>
                         </div>
                     </div>
 
                     <nav className="flex items-center gap-8">
-                        <div className="hidden md:flex items-center gap-8 mono text-[10px] font-black">
+                        <div className="hidden md:flex items-center gap-8 mono text-[11px] font-black">
                             <button onClick={() => projectsRef.current?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Deployments</button>
                             <button onClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Bridge</button>
                         </div>
                         <div className="h-4 w-px bg-white/10 mx-1"></div>
-                        <div className="mono text-[9px] flex items-center gap-3">
+                        <div className="mono text-[10px] flex items-center gap-3">
                             <span className="text-white font-bold">{currentTime}</span>
                             <div className="flex items-center gap-1.5">
                                 <div className="w-1 h-1 bg-cyan-400 rounded-full glow-dot"></div>
@@ -128,7 +128,7 @@ const Home: React.FC = () => {
                                 <div className="h-[2px] w-6 bg-cyan-400 rounded-full"></div>
                                 <p className="text-[10px] mono text-slate-500 font-bold uppercase tracking-[0.2em]">Computer Engineer / Full-Stack</p>
                             </div>
-                            <p className="text-sm text-slate-400 leading-relaxed font-medium opacity-80 italic">
+                            <p className="text-[15px] text-slate-400 leading-relaxed font-medium opacity-80 italic">
                                 Architecting intelligent systems from the heart of Nepal. Graduated IOE Pulchowk '24.
                             </p>
                         </div>
@@ -142,7 +142,7 @@ const Home: React.FC = () => {
                                 { icon: 'BL', link: RAJESH_DATA.socials.website, color: 'hover:text-cyan-400' }
                             ].map(soc => (
                                 <a key={soc.icon} href={soc.link} target="_blank" rel="noreferrer"
-                                    className={`h-10 obsidian-card flex items-center justify-center rounded-xl mono text-[10px] font-black transition-all ${soc.color} hover:bg-white/5`}>
+                                    className={`h-10 obsidian-card flex items-center justify-center rounded-xl mono text-[11px] font-black transition-all ${soc.color} hover:bg-white/5`}>
                                     {soc.icon}
                                 </a>
                             ))}
@@ -150,7 +150,7 @@ const Home: React.FC = () => {
 
                         <button
                             onClick={() => window.open(RAJESH_DATA.socials.website)}
-                            className="w-full py-4 bg-cyan-500 text-black font-black text-[10px] rounded-2xl hover:brightness-110 active:scale-95 transition-all uppercase tracking-[0.3em] shadow-lg shadow-cyan-500/20"
+                            className="w-full py-4 bg-cyan-500 text-black font-black text-[11px] rounded-2xl hover:brightness-110 active:scale-95 transition-all uppercase tracking-[0.3em] shadow-lg shadow-cyan-500/20"
                         >
                             Access_Resume_PDF
                         </button>
@@ -166,7 +166,7 @@ const Home: React.FC = () => {
                     <section>
                         <div className="flex items-center gap-4 mb-10">
                             <div className="w-1 h-3 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.5em]">01_Neural_Matrix</h2>
+                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">01_Neural_Matrix</h2>
                             <div className="h-px flex-1 bg-white/5"></div>
                         </div>
                         <BentoGrid />
@@ -176,7 +176,7 @@ const Home: React.FC = () => {
                     <section ref={projectsRef} className="scroll-mt-32">
                         <div className="flex items-center gap-4 mb-10">
                             <div className="w-1 h-3 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.5em]">02_Live_Deployments</h2>
+                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">02_Live_Deployments</h2>
                             <div className="h-px flex-1 bg-white/5"></div>
                         </div>
                         <div className="obsidian-card p-2 sm:p-4 rounded-[3rem]">
@@ -187,17 +187,17 @@ const Home: React.FC = () => {
                     {/* Section 03: Registry & Bridge */}
                     <section id="registry-section" className="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-mt-32">
                         <div className="obsidian-card p-10 rounded-[2.5rem] flex flex-col h-full">
-                            <h3 className="mono text-[10px] font-black text-cyan-400 mb-10 uppercase tracking-[0.4em] flex items-center gap-3">
+                            <h3 className="mono text-[11px] font-black text-cyan-400 mb-10 uppercase tracking-[0.4em] flex items-center gap-3">
                                 <div className="w-2 h-2 rounded bg-cyan-500 glow-dot"></div>Registry.log
                             </h3>
                             <div className="space-y-10 flex-1">
                                 {EXPERIENCES.map((exp, i) => (
                                     <div key={i} className="group relative pl-8 border-l border-white/5">
                                         <div className="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-slate-900 border border-white/10 group-hover:bg-cyan-500 group-hover:border-cyan-400 transition-all"></div>
-                                        <span className="text-[8px] mono text-slate-600 font-black mb-1 block">{exp.period}</span>
-                                        <h4 className="text-sm font-black text-white group-hover:text-cyan-400 transition-colors uppercase">{exp.role}</h4>
-                                        <p className="text-[10px] text-cyan-400/50 mono font-bold mb-3">{exp.company}</p>
-                                        <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2">{exp.description}</p>
+                                        <span className="text-[9px] mono text-slate-600 font-black mb-1 block">{exp.period}</span>
+                                        <h4 className="text-[15px] font-black text-white group-hover:text-cyan-400 transition-colors uppercase">{exp.role}</h4>
+                                        <p className="text-[11px] text-cyan-400/50 mono font-bold mb-3">{exp.company}</p>
+                                        <p className="text-[12px] text-slate-400 leading-relaxed line-clamp-2">{exp.description}</p>
                                     </div>
                                 ))}
                             </div>
@@ -217,16 +217,16 @@ const Home: React.FC = () => {
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 glow-dot"></div>
-                            <span className="mono text-[8px] font-black text-white hover:text-cyan-400 transition-colors tracking-widest uppercase">System_Active</span>
+                            <span className="mono text-[9px] font-black text-white hover:text-cyan-400 transition-colors tracking-widest uppercase">System_Active</span>
                         </div>
                         <div className="hidden md:flex items-center gap-6 opacity-40">
-                            <span className="mono text-[8px] font-bold text-slate-500 tracking-tighter uppercase">Power: {battery}</span>
-                            <span className="mono text-[8px] font-bold text-slate-500 tracking-tighter uppercase">Latency: {latency}ms</span>
+                            <span className="mono text-[9px] font-bold text-slate-500 tracking-tighter uppercase">Power: {battery}</span>
+                            <span className="mono text-[9px] font-bold text-slate-500 tracking-tighter uppercase">Latency: {latency}ms</span>
                         </div>
                     </div>
 
                     <div className="flex-1 max-w-xl mx-12 hidden lg:block overflow-hidden relative">
-                        <div className="flex whitespace-nowrap animate-marquee-fast mono text-[7px] text-slate-500 gap-16 items-center">
+                        <div className="flex whitespace-nowrap animate-marquee-fast mono text-[8px] text-slate-500 gap-16 items-center">
                             <span>// SKILLS: REACT_NEXT_PYTHON_ML_AWS_IOT_NLP_EXPRESS_DJANGO_LARAVEL_TYPESCRIPT //</span>
                             <span>// ORIGIN: KTM_IOE_PULCHOWK_NEPAL //</span>
                             <span>// STATUS: READY_FOR_DEPLOYMENT //</span>
@@ -236,7 +236,7 @@ const Home: React.FC = () => {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <p className="mono text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] hidden sm:block">© 2024 RaaZ.os</p>
+                        <p className="mono text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] hidden sm:block">© 2024 RaaZ.os</p>
                         <div className="w-1.5 h-1.5 rounded-full bg-white opacity-10"></div>
                     </div>
                 </div>

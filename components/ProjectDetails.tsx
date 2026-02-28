@@ -19,7 +19,7 @@ const ProjectDetails: React.FC = () => {
             <div className="min-h-screen bg-[#030303] flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-                    <span className="mono text-[10px] text-cyan-500 tracking-[0.5em] animate-pulse">FETCHING_DATA</span>
+                    <span className="mono text-[11px] text-cyan-500 tracking-[0.5em] animate-pulse">FETCHING_DATA</span>
                 </div>
             </div>
         );
@@ -30,7 +30,7 @@ const ProjectDetails: React.FC = () => {
             <div className="min-h-screen bg-[#030303] text-white flex flex-col items-center justify-center">
                 <h1 className="text-4xl font-black mb-4">404 // NOT_FOUND</h1>
                 <p className="text-slate-400 mb-8 mono uppercase tracking-widest">The requested project module does not exist.</p>
-                <Link to="/" className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all font-black text-sm uppercase tracking-widest">
+                <Link to="/" className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all font-black text-[15px] uppercase tracking-widest">
                     Return_To_Hub
                 </Link>
             </div>
@@ -48,9 +48,9 @@ const ProjectDetails: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
                             </svg>
                         </div>
-                        <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white group-hover:text-cyan-400 transition-colors">Return_Hub</span>
+                        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white group-hover:text-cyan-400 transition-colors">Return_Hub</span>
                     </Link>
-                    <div className="mono text-[9px] flex items-center gap-3">
+                    <div className="mono text-[10px] flex items-center gap-3">
                         <div className="flex items-center gap-1.5">
                             <div className="w-1 h-1 bg-cyan-400 rounded-full glow-dot"></div>
                             <span className="text-slate-500 font-bold tracking-widest uppercase">Project_Module</span>
@@ -86,7 +86,7 @@ const ProjectDetails: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-4 mb-8">
                             <div className="w-1 h-4 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.5em]">Overview</h2>
+                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">Overview</h2>
                         </div>
                         <p className="text-lg text-slate-300 leading-relaxed font-normal">
                             {project.description}
@@ -95,11 +95,11 @@ const ProjectDetails: React.FC = () => {
                         <div className="mt-12">
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="w-1 h-4 bg-white/20 rounded-full"></div>
-                                <h2 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.5em]">Tech_Stack</h2>
+                                <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">Tech_Stack</h2>
                             </div>
                             <div className="flex flex-wrap gap-3">
                                 {project.tags.map((tag, i) => (
-                                    <span key={i} className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs mono text-cyan-50 font-black uppercase tracking-widest shadow-lg shadow-black/50">
+                                    <span key={i} className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[11px] mono text-cyan-50 font-black uppercase tracking-widest shadow-lg shadow-black/50">
                                         {tag}
                                     </span>
                                 ))}
@@ -114,12 +114,12 @@ const ProjectDetails: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                 </svg>
                             </div>
-                            <h3 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Repository</h3>
+                            <h3 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Repository</h3>
                             <a
                                 href={project.github}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-sm font-black text-cyan-400 hover:text-white transition-colors uppercase tracking-widest flex items-center gap-2"
+                                className="text-[15px] font-black text-cyan-400 hover:text-white transition-colors uppercase tracking-widest flex items-center gap-2"
                             >
                                 View Source <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                             </a>
@@ -127,8 +127,8 @@ const ProjectDetails: React.FC = () => {
 
                         <div className="obsidian-card p-8 rounded-[2rem] border-white/5 relative overflow-hidden group hover:border-cyan-500/30 transition-all cursor-pointer" onClick={() => window.open(RAJESH_DATA.socials.github, '_blank')}>
                             <div className="absolute -right-4 -bottom-4 text-7xl opacity-[0.03] font-black group-hover:text-cyan-500 transition-colors duration-500">GH</div>
-                            <h3 className="mono text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Origin</h3>
-                            <p className="text-sm font-black text-white hover:text-cyan-400 uppercase tracking-widest">
+                            <h3 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Origin</h3>
+                            <p className="text-[15px] font-black text-white hover:text-cyan-400 uppercase tracking-widest">
                                 @raazkhnl / Github
                             </p>
                         </div>

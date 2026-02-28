@@ -35,7 +35,7 @@ const ProjectGallery: React.FC = () => {
 
             <div className="absolute bottom-8 left-8 flex flex-wrap gap-3">
               {project.tags.map((tag, i) => (
-                <span key={i} className="text-[9px] px-3 py-1.5 bg-white/5 backdrop-blur-xl rounded-lg text-white mono border border-white/10 font-black uppercase tracking-[0.2em]">{tag}</span>
+                <span key={i} className="text-[10px] px-3 py-1.5 bg-white/5 backdrop-blur-xl rounded-lg text-white mono border border-white/10 font-black uppercase tracking-[0.2em]">{tag}</span>
               ))}
             </div>
           </div>
@@ -44,7 +44,7 @@ const ProjectGallery: React.FC = () => {
               <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
               <h4 className="text-2xl font-black text-white group-hover:text-cyan-400 transition-colors tracking-tighter uppercase leading-none">{project.title}</h4>
             </div>
-            <p className="text-slate-500 text-xs mt-2 line-clamp-2 leading-relaxed font-medium pl-4">{project.description}</p>
+            <p className="text-slate-500 text-[11px] mt-2 line-clamp-2 leading-relaxed font-medium pl-4">{project.description}</p>
           </div>
         </Link>
       ))}
@@ -58,7 +58,7 @@ const ProjectGallery: React.FC = () => {
           <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-8 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all shadow-2xl border border-white/5">
             <span className="text-4xl font-light">+</span>
           </div>
-          <p className="text-xs mono text-slate-500 group-hover:text-white uppercase tracking-[0.5em] font-black transition-colors">See_All_Deployments</p>
+          <p className="text-[13px] mono text-slate-500 group-hover:text-white uppercase tracking-[0.5em] font-black transition-colors">See_All_Deployments</p>
         </div>
       </a>
     </div>

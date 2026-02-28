@@ -9,7 +9,7 @@ export const RAJESH_DATA = {
   origin: "Daldale, Nawalparasi East",
   phone: "+977-9863244500",
   email: "raazkhnl@gmail.com",
-  bio: "Seeking a challenging position in software development to leverage my expertise in full stack development and machine learning. Aiming to contribute to innovative projects that enhance user experiences through visually engaging and user-centric applications.",
+  bio: "Welcome to my digital realm. I’m a computer engineer fueled by passion, driven by curiosity, and guided by the spirit of creation. This is where technology dances with imagination, dissolving boundaries into endless possibilities. Together, we’ll ignite innovation, push beyond limits, and shape the future of the digital landscape. Let’s transform sparks of inspiration into reality — one line of code, one bold idea, one seamless experience at a time.",
   socials: {
     github: "https://github.com/raazkhnl",
     linkedin: "https://linkedin.com/in/raazkhnl",

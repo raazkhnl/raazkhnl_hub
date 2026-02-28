@@ -29,10 +29,10 @@ const Terminal: React.FC<TerminalProps> = ({ onCommand, output }) => {
           <div className="w-1.5 h-1.5 rounded-full bg-white opacity-20"></div>
           <div className="w-1.5 h-1.5 rounded-full bg-white opacity-20"></div>
         </div>
-        <span className="text-[8px] mono text-slate-500 font-black tracking-[0.4em] uppercase">Neural_Deck_Interface.sh</span>
+        <span className="text-[9px] mono text-slate-500 font-black tracking-[0.4em] uppercase">Neural_Deck_Interface.sh</span>
       </div>
 
-      <div className="flex-1 p-6 overflow-y-auto mono text-[10px] leading-relaxed no-scrollbar relative z-10 scroll-smooth">
+      <div className="flex-1 p-6 overflow-y-auto mono text-[11px] leading-relaxed no-scrollbar relative z-10 scroll-smooth">
         {output.map((line, i) => (
           <div key={i} className="mb-2 flex gap-4 opacity-70 hover:opacity-100 transition-opacity">
             <span className="text-cyan-500/40 font-black">{i.toString().padStart(2, '0')}</span>
@@ -49,9 +49,9 @@ const Terminal: React.FC<TerminalProps> = ({ onCommand, output }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Initiate Command Sequence..."
-          className="bg-transparent border-none outline-none flex-1 mono text-white placeholder:text-slate-800 text-[10px] uppercase font-black"
+          className="bg-transparent border-none outline-none flex-1 mono text-white placeholder:text-slate-800 text-[11px] uppercase font-black"
         />
-        <div className="text-[7px] mono text-slate-600 font-black uppercase tracking-tighter">SECURE_SHELL.v3</div>
+        <div className="text-[8px] mono text-slate-600 font-black uppercase tracking-tighter">SECURE_SHELL.v3</div>
       </form>
     </div>
   );
