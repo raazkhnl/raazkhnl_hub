@@ -1,20 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="theme-color" content="#050507" />
+		<meta name="color-scheme" content="dark" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RaaZ // Neural Hub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;900&display=swap"
-    rel="stylesheet">
-</head>
+		<!-- Primary SEO -->
+		<title>Rajesh Khanal · Computer Engineer · Full-stack · @raazkhnl</title>
+		<meta
+			name="description"
+			content="Rajesh Khanal (raazkhnl) — Computer Engineer at the Inland Revenue Department, Gov of Nepal. M.E. Networks & Cyber Security at Pulchowk Campus. Building reliable, intelligent systems from Kathmandu."
+		/>
+		<meta
+			name="keywords"
+			content="Rajesh Khanal, raazkhnl, Computer Engineer Nepal, Pulchowk Campus, IRD Nepal, Networks Cybersecurity, Full Stack Developer Nepal, React, TypeScript, Machine Learning, Python, Portfolio"
+		/>
+		<meta name="author" content="Rajesh Khanal" />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="googlebot" content="index, follow" />
+		<link rel="canonical" href="https://raazkhnl.github.io/raazkhnl_hub/" />
 
-<body class="selection:bg-cyan-500/20 selection:text-cyan-400">
-  <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+		<!-- Favicons — SVG mark matches the navbar logo. `%BASE_URL%` is
+		     replaced by Vite per env: `/` in dev, `/raazkhnl_hub/` in build. -->
+		<link rel="icon" type="image/svg+xml" href="%BASE_URL%icon.svg" />
+		<link rel="mask-icon" href="%BASE_URL%icon.svg" color="#36f9b3" />
+		<link rel="apple-touch-icon" href="%BASE_URL%icon.svg" />
 
+		<!-- Open Graph -->
+		<meta property="og:type" content="profile" />
+		<meta property="og:site_name" content="raazkhnl" />
+		<meta
+			property="og:title"
+			content="raazkhnl — Rajesh Khanal · Computer Engineer"
+		/>
+		<meta
+			property="og:description"
+			content="Computer Engineer @ IRD, Gov of Nepal. M.E. Networks & Cyber Security @ Pulchowk Campus. Building reliable systems for people."
+		/>
+		<meta
+			property="og:url"
+			content="https://raazkhnl.github.io/raazkhnl_hub/"
+		/>
+		<meta
+			property="og:image"
+			content="https://raazkhnl.github.io/raazkhnl_hub/raazkhnl.png"
+		/>
+		<meta property="og:image:alt" content="raazkhnl — Rajesh Khanal" />
+		<meta property="og:image:width" content="500" />
+		<meta property="og:image:height" content="500" />
+		<meta property="profile:first_name" content="Rajesh" />
+		<meta property="profile:last_name" content="Khanal" />
+		<meta property="profile:username" content="raazkhnl" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			name="twitter:title"
+			content="raazkhnl — Rajesh Khanal · Computer Engineer"
+		/>
+		<meta
+			name="twitter:description"
+			content="Computer Engineer @ IRD, Gov of Nepal. Building reliable systems for people from Kathmandu."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://raazkhnl.github.io/raazkhnl_hub/raazkhnl.png"
+		/>
+		<meta name="twitter:creator" content="@raazkhnl" />
+
+		<!-- JSON-LD: Person -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Rajesh Khanal",
+				"alternateName": "raazkhnl",
+				"jobTitle": "Computer Engineer",
+				"worksFor": {
+					"@type": "GovernmentOrganization",
+					"name": "Inland Revenue Department, Government of Nepal"
+				},
+				"alumniOf": [
+					{ "@type": "CollegeOrUniversity", "name": "Pulchowk Campus (IOE)" }
+				],
+				"address": {
+					"@type": "PostalAddress",
+					"addressLocality": "Kathmandu",
+					"addressCountry": "Nepal"
+				},
+				"email": "mailto:raazkhnl@gmail.com",
+				"url": "https://raazkhnl.github.io/raazkhnl_hub/",
+				"image": "https://raazkhnl.github.io/raazkhnl_hub/raazkhnl.png",
+				"sameAs": [
+					"https://github.com/raazkhnl",
+					"https://linkedin.com/in/raazkhnl",
+					"https://khanalrajesh.com.np",
+					"https://raazkhnl.blogspot.com"
+				],
+				"knowsAbout": [
+					"Full Stack Development",
+					"Machine Learning",
+					"Computer Vision",
+					"Networks",
+					"Cyber Security",
+					"React",
+					"TypeScript",
+					"Python"
+				]
+			}
+		</script>
+		<!-- JSON-LD: WebSite -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebSite",
+				"name": "raazkhnl — neural hub",
+				"url": "https://raazkhnl.github.io/raazkhnl_hub/",
+				"author": { "@type": "Person", "name": "Rajesh Khanal" }
+			}
+		</script>
+
+		<!-- Fonts (preconnected, swap to avoid FOIT) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			html,
+			body {
+				background: #050507;
+				margin: 0;
+			}
+			@media (prefers-reduced-motion: no-preference) {
+				html {
+					scroll-behavior: smooth;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="root"></div>
+		<noscript>
+			<div
+				style="
+					padding: 32px;
+					color: #cbd5e1;
+					font-family: system-ui, sans-serif;
+					text-align: center;
+				"
+			>
+				<h1>raazkhnl — Rajesh Khanal</h1>
+				<p>
+					Computer Engineer @ IRD, Gov of Nepal. M.E. Networks & Cyber Security
+					@ Pulchowk Campus.
+				</p>
+				<p>
+					This site uses JavaScript for interactive content. Please enable it,
+					or visit
+					<a href="https://github.com/raazkhnl" style="color: #36f9b3"
+						>github.com/raazkhnl</a
+					>.
+				</p>
+			</div>
+		</noscript>
+		<script type="module" src="/index.tsx"></script>
+	</body>
 </html>

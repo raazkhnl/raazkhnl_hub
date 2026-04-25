@@ -1,142 +1,347 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { PROJECTS, RAJESH_DATA } from '../constants';
+/**
+ * ProjectDetails — single-project page (route: /project/:id).
+ * Shows banner · overview · tech stack · GitHub link · "keep exploring" tile row.
+ * Falls back to a 404-style view when the id is unknown.
+ */
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { PROJECTS, RAAZKHNL } from "../constants";
+import GlowCard from "./GlowCard";
+import Reveal from "./Reveal";
+
+const repoLink = (url?: string): string => url || RAAZKHNL.socials.github;
 
 const ProjectDetails: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const [loading, setLoading] = useState(true);
+	const { id } = useParams<{ id: string }>();
+	const [loading, setLoading] = useState(true);
 
-    const project = PROJECTS.find(p => p.id === id);
+	const project = PROJECTS.find((p) => p.id === id);
+	const others = PROJECTS.filter((p) => p.id !== id).slice(0, 3);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        const timer = setTimeout(() => setLoading(false), 600);
-        return () => clearTimeout(timer);
-    }, [id]);
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		const timer = setTimeout(() => setLoading(false), 300);
+		return () => clearTimeout(timer);
+	}, [id]);
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-[#030303] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-                    <span className="mono text-[11px] text-cyan-500 tracking-[0.5em] animate-pulse">FETCHING_DATA</span>
-                </div>
-            </div>
-        );
-    }
+	if (loading) {
+		return (
+			<div
+				className="fixed inset-0 z-[999] flex items-center justify-center"
+				style={{ background: "#050507" }}
+			>
+				<div className="stage" />
+				<div className="relative flex flex-col items-center gap-3">
+					<div
+						className="w-10 h-10 rounded-full border-2 animate-spin"
+						style={{
+							borderColor: "rgba(54,249,179,0.18)",
+							borderTopColor: "#36f9b3",
+						}}
+					/>
+					<span
+						className="mono text-[11px] tracking-[0.4em] uppercase"
+						style={{ color: "#36f9b3" }}
+					>
+						loading
+					</span>
+				</div>
+			</div>
+		);
+	}
 
-    if (!project) {
-        return (
-            <div className="min-h-screen bg-[#030303] text-white flex flex-col items-center justify-center">
-                <h1 className="text-4xl font-black mb-4">404 // NOT_FOUND</h1>
-                <p className="text-slate-400 mb-8 mono uppercase tracking-widest">The requested project module does not exist.</p>
-                <Link to="/" className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all font-black text-[15px] uppercase tracking-widest">
-                    Return_To_Hub
-                </Link>
-            </div>
-        );
-    }
+	if (!project) {
+		return (
+			<div className="relative min-h-screen flex flex-col items-center justify-center text-center px-6">
+				<div className="stage" />
+				<div className="grain" />
+				<div className="relative z-10">
+					<div className="display text-7xl sm:text-9xl font-black text-grad-mint">
+						404
+					</div>
+					<p className="mt-4 text-slate-400 mono text-[12px] uppercase tracking-[0.3em]">
+						project not found
+					</p>
+					<Link to="/" className="btn-ghost mt-8 inline-flex">
+						← back home
+					</Link>
+				</div>
+			</div>
+		);
+	}
 
-    return (
-        <div className="min-h-screen bg-[#030303] text-slate-200 selection:bg-cyan-500/30 font-sans pb-32">
-            {/* Dynamic Header */}
-            <header className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[92%] max-w-5xl transition-all duration-500 opacity-90 backdrop-blur-3xl bg-black/60 border border-white/10 rounded-2xl h-14 shadow-lg shadow-cyan-900/10">
-                <div className="flex items-center justify-between px-6 h-full">
-                    <Link to="/" className="flex items-center gap-4 group">
-                        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center border border-white/20 group-hover:bg-white group-hover:text-black transition-all">
-                            <svg className="w-4 h-4 translate-x-[-1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </div>
-                        <span className="text-[11px] font-black tracking-[0.2em] uppercase text-white group-hover:text-cyan-400 transition-colors">Return_Hub</span>
-                    </Link>
-                    <div className="mono text-[10px] flex items-center gap-3">
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-1 h-1 bg-cyan-400 rounded-full glow-dot"></div>
-                            <span className="text-slate-500 font-bold tracking-widest uppercase">Project_Module</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+	return (
+		<div className="relative min-h-screen text-slate-200 pb-24">
+			<div className="stage" />
+			<div className="grain" />
+			<div className="scanlines" />
 
-            {/* Main Content */}
-            <main className="pt-32 px-4 sm:px-8 max-w-5xl mx-auto">
-                {/* Banner Section */}
-                <div className="relative rounded-[3rem] overflow-hidden aspect-[21/9] mb-12 border border-white/10 shadow-2xl">
-                    <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-1000"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#030303] via-[#030303]/40 to-transparent"></div>
+			<header className="fixed top-0 left-0 right-0 z-50 pt-6">
+				<div className="mx-auto px-4 sm:px-6 max-w-5xl">
+					<div className="flex items-center justify-between gap-4 glass rounded-2xl pl-3 pr-3 py-2">
+						<Link to="/" className="group flex items-center gap-3 pl-1">
+							<div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+								<svg
+									className="w-4 h-4"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2.4"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M15 19l-7-7 7-7"
+									/>
+								</svg>
+							</div>
+							<span className="text-[12px] font-semibold text-white">
+								back to hub
+							</span>
+						</Link>
+						<div className="flex items-center gap-2 mono text-[10px] text-slate-400">
+							<span className="dot" />
+							project · {project.id}
+						</div>
+					</div>
+				</div>
+			</header>
 
-                    <div className="absolute bottom-10 left-10">
-                        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none drop-shadow-2xl">
-                            {project.title}
-                        </h1>
-                    </div>
-                </div>
+			<main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-32">
+				<Reveal>
+					<div className="card-media aspect-[21/9] rounded-[32px]">
+						<img
+							src={project.image}
+							alt={project.title}
+							className="absolute inset-0 w-full h-full object-cover"
+						/>
+						<div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent" />
+						<div
+							className="absolute inset-0"
+							style={{
+								background:
+									"radial-gradient(60% 80% at 0% 100%, rgba(54,249,179,0.25), transparent)",
+							}}
+						/>
+						<div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-10 right-6 sm:right-10">
+							<div className="flex flex-wrap gap-2 mb-4">
+								{project.tags.map((t, i) => (
+									<span key={i} className="chip">
+										{t}
+									</span>
+								))}
+							</div>
+							<h1 className="display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-none">
+								{project.title}
+							</h1>
+						</div>
+					</div>
+				</Reveal>
 
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="md:col-span-2 obsidian-card p-10 rounded-[2.5rem] border-white/5 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-8 opacity-5 text-8xl font-black select-none pointer-events-none">
-                            {'{}'}
-                        </div>
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-1 h-4 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">Overview</h2>
-                        </div>
-                        <p className="text-lg text-slate-300 leading-relaxed font-normal">
-                            {project.description}
-                        </p>
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
+					<Reveal className="md:col-span-2">
+						<GlowCard className="glass rounded-[24px] p-7 sm:p-9 h-full">
+							<span className="eyebrow">overview</span>
+							<p className="mt-4 text-[15px] sm:text-[17px] text-slate-200/90 leading-relaxed">
+								{project.description}
+							</p>
 
-                        <div className="mt-12">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-1 h-4 bg-white/20 rounded-full"></div>
-                                <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">Tech_Stack</h2>
-                            </div>
-                            <div className="flex flex-wrap gap-3">
-                                {project.tags.map((tag, i) => (
-                                    <span key={i} className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-[11px] mono text-cyan-50 font-black uppercase tracking-widest shadow-lg shadow-black/50">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+							<div className="mt-10">
+								<span className="eyebrow">tech stack</span>
+								<div className="mt-4 flex flex-wrap gap-2">
+									{project.tags.map((tag, i) => (
+										<span key={i} className="chip">
+											{tag}
+										</span>
+									))}
+								</div>
+							</div>
+						</GlowCard>
+					</Reveal>
 
-                    <div className="md:col-span-1 space-y-6">
-                        <div className="obsidian-card p-8 rounded-[2rem] border-white/5 flex flex-col items-center justify-center text-center">
-                            <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 shadow-xl">
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                </svg>
-                            </div>
-                            <h3 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-2">Repository</h3>
-                            <a
-                                href={project.github}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-[15px] font-black text-cyan-400 hover:text-white transition-colors uppercase tracking-widest flex items-center gap-2"
-                            >
-                                View Source <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                            </a>
-                        </div>
+					<div className="space-y-5">
+						{project.link && (
+							<Reveal delay={80}>
+								<a
+									href={project.link}
+									target="_blank"
+									rel="noreferrer"
+									className="block"
+								>
+									<GlowCard className="glass rounded-[24px] p-6 hover:border-pink/40 transition group">
+										<div className="flex items-center gap-3">
+											<div
+												className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
+												style={{
+													background:
+														"linear-gradient(135deg,#ff3d8b,#fb7185)",
+												}}
+											>
+												<svg
+													className="w-4 h-4"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2.4"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.5-3 4-6.5 4-9s-1.5-6-4-9m0 18c-2.5-3-4-6.5-4-9s1.5-6 4-9M3 12h18"
+													/>
+												</svg>
+											</div>
+											<div className="flex-1 min-w-0">
+												<div className="text-[13px] font-semibold text-white">
+													view live
+												</div>
+												<div className="mono text-[10px] text-slate-400 truncate">
+													{project.link.replace(/^https?:\/\//, "")}
+												</div>
+											</div>
+											<svg
+												className="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												strokeWidth="2"
+											>
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="M7 17L17 7M9 7h8v8"
+												/>
+											</svg>
+										</div>
+									</GlowCard>
+								</a>
+							</Reveal>
+						)}
+						<Reveal delay={120}>
+							<a
+								href={repoLink(project.github)}
+								target="_blank"
+								rel="noreferrer"
+								className="block"
+							>
+								<GlowCard className="glass rounded-[24px] p-6 hover:border-mint/40 transition group">
+									<div className="flex items-center gap-3">
+										<div
+											className="w-10 h-10 rounded-xl flex items-center justify-center text-[#04130c]"
+											style={{
+												background: "linear-gradient(135deg,#36f9b3,#10b981)",
+											}}
+										>
+											<svg
+												className="w-4 h-4"
+												viewBox="0 0 24 24"
+												fill="currentColor"
+											>
+												<path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-1.94c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.8.55A11.5 11.5 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5z" />
+											</svg>
+										</div>
+										<div className="flex-1">
+											<div className="text-[13px] font-semibold text-white">
+												{project.github
+													? "view source"
+													: project.link
+														? "more of my code"
+														: "see all my work"}
+											</div>
+											<div className="mono text-[10px] text-slate-400">
+												github · @raazkhnl
+											</div>
+										</div>
+										<svg
+											className="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M7 17L17 7M9 7h8v8"
+											/>
+										</svg>
+									</div>
+								</GlowCard>
+							</a>
+						</Reveal>
+						<Reveal delay={180}>
+							<a href={`mailto:${RAAZKHNL.socials.email}`} className="block">
+								<GlowCard className="glass rounded-[24px] p-6 hover:border-pink/40 transition">
+									<div className="text-[12.5px] font-semibold text-white">
+										questions about this build?
+									</div>
+									<p className="mono text-[11px] text-slate-400 mt-2">
+										happy to chat — drop me a line.
+									</p>
+									<div
+										className="mt-3 inline-flex items-center gap-2 mono text-[11px]"
+										style={{ color: "#f9a8d4" }}
+									>
+										{RAAZKHNL.socials.email}
+										<svg
+											className="w-3.5 h-3.5"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											strokeWidth="2.4"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M5 12h14m0 0l-6-6m6 6l-6 6"
+											/>
+										</svg>
+									</div>
+								</GlowCard>
+							</a>
+						</Reveal>
+					</div>
+				</div>
 
-                        <div className="obsidian-card p-8 rounded-[2rem] border-white/5 relative overflow-hidden group hover:border-cyan-500/30 transition-all cursor-pointer" onClick={() => window.open(RAJESH_DATA.socials.github, '_blank')}>
-                            <div className="absolute -right-4 -bottom-4 text-7xl opacity-[0.03] font-black group-hover:text-cyan-500 transition-colors duration-500">GH</div>
-                            <h3 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Origin</h3>
-                            <p className="text-[15px] font-black text-white hover:text-cyan-400 uppercase tracking-widest">
-                                @raazkhnl / Github
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    );
+				{others.length > 0 && (
+					<section className="mt-16">
+						<Reveal>
+							<div className="flex items-end justify-between mb-6">
+								<span className="eyebrow">keep exploring</span>
+								<Link
+									to="/"
+									className="mono text-[11px] text-slate-400 hover:text-white"
+								>
+									all work →
+								</Link>
+							</div>
+						</Reveal>
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+							{others.map((p, i) => (
+								<Reveal key={p.id} delay={i * 80}>
+									<Link to={`/project/${p.id}`} className="group block">
+										<GlowCard className="card-media aspect-video">
+											<img
+												src={p.image}
+												alt={p.title}
+												className="absolute inset-0 w-full h-full object-cover"
+											/>
+											<div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/30 to-transparent" />
+											<div className="absolute bottom-0 p-4">
+												<h4 className="text-white text-base font-semibold group-hover:text-grad-mint transition">
+													{p.title}
+												</h4>
+											</div>
+										</GlowCard>
+									</Link>
+								</Reveal>
+							))}
+						</div>
+					</section>
+				)}
+			</main>
+		</div>
+	);
 };
 
 export default ProjectDetails;

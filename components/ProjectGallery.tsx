@@ -1,68 +1,164 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { PROJECTS, RAJESH_DATA } from '../constants';
+/**
+ * ProjectGallery — grid of project cards with cursor-tracking glow.
+ * First two projects are featured (wider tiles); the rest are standard.
+ * The trailing tile links to the GitHub profile.
+ *
+ * The corner action button prefers a project's live `link` (shipped products),
+ * then `github` (open-source repos), and finally falls back to the profile root.
+ * The icon and aria-label adapt accordingly so users know where it leads.
+ */
+import React from "react";
+import { Link } from "react-router-dom";
+import { PROJECTS, RAAZKHNL } from "../constants";
+import type { Project } from "../types";
+import GlowCard from "./GlowCard";
+import Reveal from "./Reveal";
+
+type ActionKind = "live" | "repo" | "profile";
+
+const projectAction = (p: Project): { href: string; kind: ActionKind } => {
+	if (p.link)   return { href: p.link,   kind: "live" };
+	if (p.github) return { href: p.github, kind: "repo" };
+	return { href: RAAZKHNL.socials.github, kind: "profile" };
+};
+
+const ACTION_LABEL: Record<ActionKind, string> = {
+	live: "open live demo",
+	repo: "open on github",
+	profile: "open my github",
+};
 
 const ProjectGallery: React.FC = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-4 sm:p-6 pb-12">
-      {PROJECTS.map((project) => (
-        <Link
-          key={project.id}
-          to={`/project/${project.id}`}
-          className="group relative block"
-        >
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0a0a0c] aspect-video mb-8 border border-white/5 group-hover:border-white/20 transition-all duration-700 shadow-2xl overflow-hidden">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 opacity-30 group-hover:opacity-100"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/20 to-transparent opacity-90 transition-opacity duration-700 group-hover:opacity-40"></div>
+	return (
+		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5">
+			{PROJECTS.map((project, i) => {
+				const featured = i < 2;
+				return (
+					<Reveal
+						key={project.id}
+						delay={i * 60}
+						className={featured ? "lg:col-span-3" : "lg:col-span-2"}
+					>
+						<Link to={`/project/${project.id}`} className="group block">
+							<GlowCard className="card-media aspect-[4/3]">
+								<img
+									src={project.image}
+									alt={project.title}
+									loading="lazy"
+									className="absolute inset-0 w-full h-full object-cover"
+								/>
+								<div className="absolute inset-0 bg-gradient-to-t from-[#050507] via-[#050507]/40 to-transparent" />
+								<div
+									className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+									style={{
+										background:
+											"radial-gradient(60% 60% at 50% 100%, rgba(54,249,179,0.30), transparent)",
+									}}
+								/>
 
-            <div className="absolute top-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center border border-white/20 hover:bg-white hover:text-black text-white hover:scale-110 transition-all z-10"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </div>
+								<div className="absolute top-4 left-4 right-4 flex items-start justify-between">
+									<span className="chip">
+										<span className="dot" />
+										{project.tags[0]}
+									</span>
+									{(() => {
+										const { href, kind } = projectAction(project);
+										return (
+											<button
+												type="button"
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													window.open(href, "_blank", "noopener,noreferrer");
+												}}
+												className="px-2.5 h-8 min-w-8 rounded-full glass-tight flex items-center gap-1.5 opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition"
+												aria-label={`${ACTION_LABEL[kind]} — ${project.title}`}
+												title={ACTION_LABEL[kind]}
+											>
+												{kind === "live" && (
+													<span className="mono text-[10px] text-white">live</span>
+												)}
+												<svg
+													className="w-3.5 h-3.5 text-white"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M7 17L17 7M9 7h8v8"
+													/>
+												</svg>
+											</button>
+										);
+									})()}
+								</div>
 
-            <div className="absolute bottom-8 left-8 flex flex-wrap gap-3">
-              {project.tags.map((tag, i) => (
-                <span key={i} className="text-[10px] px-3 py-1.5 bg-white/5 backdrop-blur-xl rounded-lg text-white mono border border-white/10 font-black uppercase tracking-[0.2em]">{tag}</span>
-              ))}
-            </div>
-          </div>
-          <div className="px-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-white opacity-40"></div>
-              <h4 className="text-2xl font-black text-white group-hover:text-cyan-400 transition-colors tracking-tighter uppercase leading-none">{project.title}</h4>
-            </div>
-            <p className="text-slate-500 text-[11px] mt-2 line-clamp-2 leading-relaxed font-medium pl-4">{project.description}</p>
-          </div>
-        </Link>
-      ))}
-      <a
-        href={RAJESH_DATA.socials.github}
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center justify-center obsidian-card rounded-[2.5rem] border-dashed border-2 border-white/5 hover:border-white/20 hover:bg-white/5 transition-all cursor-pointer group aspect-video md:aspect-auto min-h-[400px]"
-      >
-        <div className="text-center p-12">
-          <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mx-auto mb-8 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all shadow-2xl border border-white/5">
-            <span className="text-4xl font-light">+</span>
-          </div>
-          <p className="text-[13px] mono text-slate-500 group-hover:text-white uppercase tracking-[0.5em] font-black transition-colors">See_All_Deployments</p>
-        </div>
-      </a>
-    </div>
-  );
+								<div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
+									<h3
+										className={`display font-black tracking-tight text-white ${
+											featured ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
+										}`}
+									>
+										{project.title}
+									</h3>
+									<p className="mt-2 text-[12.5px] text-slate-300/90 leading-relaxed line-clamp-2 max-w-md">
+										{project.description}
+									</p>
+									<div className="mt-3 flex flex-wrap gap-1.5">
+										{project.tags.slice(0, 4).map((t, ti) => (
+											<span
+												key={ti}
+												className="mono text-[10px] text-slate-300/80 px-2 py-0.5 rounded-md bg-white/5 border border-white/5"
+											>
+												{t}
+											</span>
+										))}
+									</div>
+								</div>
+							</GlowCard>
+						</Link>
+					</Reveal>
+				);
+			})}
+
+			<Reveal className="lg:col-span-2" delay={PROJECTS.length * 60}>
+				<a
+					href={RAAZKHNL.socials.github}
+					target="_blank"
+					rel="noreferrer"
+					className="group block"
+				>
+					<GlowCard className="aspect-[4/3] glass rounded-[28px] flex flex-col items-center justify-center text-center p-8 transition relative overflow-hidden">
+						<div
+							className="absolute inset-0 opacity-40 pointer-events-none"
+							style={{
+								background:
+									"radial-gradient(60% 60% at 50% 50%, rgba(54,249,179,0.15), transparent)",
+							}}
+						/>
+						<div
+							className="relative w-14 h-14 rounded-2xl flex items-center justify-center mb-5 text-[#04130c] text-2xl font-black"
+							style={{
+								background:
+									"linear-gradient(135deg,#36f9b3,#38bdf8 60%,#ff3d8b)",
+							}}
+						>
+							+
+						</div>
+						<div className="relative text-white text-lg font-semibold">
+							more on github
+						</div>
+						<div className="relative mono text-[11px] text-slate-400 mt-2">
+							@raazkhnl
+						</div>
+					</GlowCard>
+				</a>
+			</Reveal>
+		</div>
+	);
 };
 
 export default ProjectGallery;

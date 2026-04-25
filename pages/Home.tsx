@@ -1,249 +1,661 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RAJESH_DATA, EXPERIENCES } from '../constants';
-import Terminal from '../components/Terminal';
-import BentoGrid from '../components/BentoGrid';
-import ProjectGallery from '../components/ProjectGallery';
-import ContactForm from '../components/ContactForm';
+/**
+ * Home — landing page composition.
+ *
+ * Owns:
+ *  - boot screen
+ *  - top nav with seconds-resolution clock
+ *  - hero (chips · headline · stats · CTAs)
+ *  - socials grid + Terminal (right column)
+ *  - stack · work · timeline · contact sections
+ *  - persisted accent + matrix-rain preferences (localStorage)
+ *  - keyboard shortcuts: g h / g s / g w / g c
+ */
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { RAAZKHNL, EXPERIENCES } from "../constants";
+import Terminal from "../components/Terminal";
+import BentoGrid from "../components/BentoGrid";
+import ProjectGallery from "../components/ProjectGallery";
+import ContactForm from "../components/ContactForm";
+import MatrixRain from "../components/MatrixRain";
+import Reveal from "../components/Reveal";
+import GlowCard from "../components/GlowCard";
+import MagneticButton from "../components/MagneticButton";
+import Typewriter from "../components/Typewriter";
+import Avatar from "../components/Avatar";
+
+const HERO_PHRASES = [
+	"systems for people",
+	"tools that vibe",
+	"tax tech for nepal",
+	"interfaces that ship",
+	"things that just work",
+];
+
+type Accent = "mint" | "pink" | "amber" | "iris";
+
+const ACCENT_HEX: Record<Accent, string> = {
+	mint: "#36f9b3",
+	pink: "#ff3d8b",
+	amber: "#fbbf24",
+	iris: "#8b5cf6",
+};
+
+const ACCENT_KEY = "raazkhnl.accent.v1";
+const MATRIX_KEY = "raazkhnl.matrix.v1";
+const BOOTED_KEY = "raazkhnl.booted";
 
 const Home: React.FC = () => {
-    const [loading, setLoading] = useState(true);
-    const [terminalOutput, setTerminalOutput] = useState<string[]>([]);
-    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+	const [boot, setBoot] = useState(() => {
+		try {
+			return sessionStorage.getItem(BOOTED_KEY) !== "1";
+		} catch {
+			return true;
+		}
+	});
+	const [now, setNow] = useState(() => new Date());
+	const [scrolled, setScrolled] = useState(false);
+	const [accent, setAccent] = useState<Accent>(() => {
+		try {
+			const v = localStorage.getItem(ACCENT_KEY);
+			if (v && ["mint", "pink", "amber", "iris"].includes(v))
+				return v as Accent;
+		} catch {
+			/* ignore */
+		}
+		return "mint";
+	});
+	const [matrixOn, setMatrixOn] = useState<boolean>(() => {
+		try {
+			const v = localStorage.getItem(MATRIX_KEY);
+			if (v === "0") return false;
+		} catch {
+			/* ignore */
+		}
+		return true;
+	});
+	const [emailCopied, setEmailCopied] = useState(false);
 
-    const [battery, setBattery] = useState<string>("100%");
-    const [latency, setLatency] = useState<number>(24);
+	const heroRef = useRef<HTMLElement>(null);
+	const stackRef = useRef<HTMLElement>(null);
+	const workRef = useRef<HTMLElement>(null);
+	const contactRef = useRef<HTMLElement>(null);
 
-    const [scrolled, setScrolled] = useState(false);
-    const contactRef = useRef<HTMLDivElement>(null);
-    const projectsRef = useRef<HTMLDivElement>(null);
+	/* clock — tick every second so the nav shows seconds */
+	useEffect(() => {
+		const id = setInterval(() => setNow(new Date()), 1000);
+		return () => clearInterval(id);
+	}, []);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            // Fix clipped navbar issue by ensuring background expands
-            setScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        const timer = setTimeout(() => setLoading(false), 1200);
-        const clock = setInterval(() => setCurrentTime(new Date().toLocaleTimeString()), 1000);
+	/* scroll listener (passive) + boot timer (only when actually booting) */
+	useEffect(() => {
+		const onScroll = () => setScrolled(window.scrollY > 12);
+		window.addEventListener("scroll", onScroll, { passive: true });
+		let t: number | undefined;
+		if (boot) {
+			t = window.setTimeout(() => {
+				setBoot(false);
+				try { sessionStorage.setItem(BOOTED_KEY, "1"); } catch { /* ignore */ }
+			}, 600);
+		}
+		return () => {
+			window.removeEventListener("scroll", onScroll);
+			if (t) clearTimeout(t);
+		};
+	}, [boot]);
 
-        if ('getBattery' in navigator) {
-            (navigator as any).getBattery().then((bat: any) => {
-                setBattery(`${Math.round(bat.level * 100)}%`);
-            });
-        }
+	/* persist & apply accent */
+	useEffect(() => {
+		document.documentElement.style.setProperty("--accent", ACCENT_HEX[accent]);
+		try {
+			localStorage.setItem(ACCENT_KEY, accent);
+		} catch {
+			/* ignore */
+		}
+	}, [accent]);
 
-        setTerminalOutput([
-            "Neural_Deck // Connection Established.",
-            "Identifier: RaaZ Khanal // Pulchowk Campus",
-            "Module_Load: Successful.",
-            "Available protocols: HELP"
-        ]);
+	/* persist matrix preference */
+	useEffect(() => {
+		try {
+			localStorage.setItem(MATRIX_KEY, matrixOn ? "1" : "0");
+		} catch {
+			/* ignore */
+		}
+	}, [matrixOn]);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            clearTimeout(timer);
-            clearInterval(clock);
-        };
-    }, []);
+	/* keyboard shortcuts: g h / g s / g w / g c */
+	useEffect(() => {
+		let buffer = "";
+		let timer: number | null = null;
+		const onKey = (e: KeyboardEvent) => {
+			const target = e.target as HTMLElement | null;
+			if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+			buffer += e.key.toLowerCase();
+			if (timer) window.clearTimeout(timer);
+			timer = window.setTimeout(() => (buffer = ""), 700);
+			if (buffer.endsWith("gh"))
+				heroRef.current?.scrollIntoView({ behavior: "smooth" });
+			if (buffer.endsWith("gs"))
+				stackRef.current?.scrollIntoView({ behavior: "smooth" });
+			if (buffer.endsWith("gw"))
+				workRef.current?.scrollIntoView({ behavior: "smooth" });
+			if (buffer.endsWith("gc"))
+				contactRef.current?.scrollIntoView({ behavior: "smooth" });
+		};
+		window.addEventListener("keydown", onKey);
+		return () => {
+			window.removeEventListener("keydown", onKey);
+			if (timer) window.clearTimeout(timer);
+		};
+	}, []);
 
-    const handleCommand = async (cmd: string) => {
-        const command = cmd.toLowerCase().trim();
-        let newOutput = [...terminalOutput, `> ${cmd}`];
+	const copyEmail = useCallback(async () => {
+		try {
+			await navigator.clipboard.writeText(RAAZKHNL.socials.email);
+			setEmailCopied(true);
+			setTimeout(() => setEmailCopied(false), 1600);
+		} catch {
+			/* ignore */
+		}
+	}, []);
 
-        switch (command) {
-            case 'help':
-                newOutput.push("PROTOCOLS: about, registry, projects, contact, clear, help");
-                break;
-            case 'about':
-                newOutput.push("INFO: Rajesh Khanal (RaaZ) - Computer Engineer / Full-Stack from IOE Pulchowk.");
-                newOutput.push("MISSION: Architecting intelligent systems and AI-powered solutions.");
-                break;
-            case 'registry':
-                newOutput.push("ACCESSING REGISTRY...");
-                document.getElementById('registry-section')?.scrollIntoView({ behavior: 'smooth' });
-                break;
-            case 'clear': setTerminalOutput(["System Reset."]); return;
-            case 'projects': projectsRef.current?.scrollIntoView({ behavior: 'smooth' }); break;
-            case 'contact': contactRef.current?.scrollIntoView({ behavior: 'smooth' }); break;
-            default: newOutput.push(`ERR: Unrecognized command. Type HELP for protocols.`);
-        }
-        setTerminalOutput(newOutput);
-    };
+	const hh = String(now.getHours()).padStart(2, "0");
+	const mm = String(now.getMinutes()).padStart(2, "0");
+	const ss = String(now.getSeconds()).padStart(2, "0");
+	const blink = ss.charCodeAt(1) % 2 === 0;
 
-    if (loading) {
-        return (
-            <div className="fixed inset-0 bg-[#030303] z-[999] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-                    <span className="mono text-[11px] text-cyan-500 tracking-[0.5em] animate-pulse">INIT_HUB</span>
-                </div>
-            </div>
-        );
-    }
+	if (boot) {
+		return (
+			<div
+				className="fixed inset-0 z-[999] flex items-center justify-center"
+				style={{ background: "#050507" }}
+			>
+				<div className="stage" />
+				<div className="relative flex flex-col items-center gap-4">
+					<div className="relative w-12 h-12">
+						<div
+							className="absolute inset-0 rounded-full"
+							style={{
+								background:
+									"conic-gradient(from 0deg, #36f9b3, #38bdf8, #ff3d8b, #36f9b3)",
+								mask: "radial-gradient(circle, transparent 56%, black 57%)",
+								WebkitMask:
+									"radial-gradient(circle, transparent 56%, black 57%)",
+								animation: "orbit 1.4s linear infinite",
+							}}
+						/>
+					</div>
+					<span
+						className="mono text-[10px] tracking-[0.45em] uppercase"
+						style={{ color: "#36f9b3" }}
+					>
+						booting
+					</span>
+				</div>
+			</div>
+		);
+	}
 
-    return (
-        <div className="min-h-screen bg-[#030303] text-slate-200 selection:bg-cyan-500/30">
+	return (
+		<div className="relative min-h-screen text-slate-200">
+			<div className="stage" />
+			{matrixOn && (
+				<MatrixRain intensity={0.06} color={`${ACCENT_HEX[accent]}88`} />
+			)}
+			<div className="grain" />
+			<div className="scanlines" />
 
-            {/* Floating Neural Deck (Header) */}
-            <header className={`fixed left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 flex justify-center items-start pt-6 ${scrolled ? 'top-0 pt-4 w-[95%] max-w-5xl opacity-95 backdrop-blur-3xl' : 'w-[92%] max-w-5xl'}`}>
-                <div className={`obsidian-card rounded-2xl h-14 w-full flex items-center justify-between px-6 border-cyan-500/10 transition-all duration-500 ${scrolled ? 'bg-black/80 border-cyan-500/20 shadow-lg shadow-cyan-900/20 scale-[1.01]' : ''}`}>
-                    <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center font-black text-black text-[11px]">RK</div>
-                        <div className="hidden sm:flex flex-col">
-                            <span className="text-[11px] font-black tracking-tight leading-none uppercase text-white">Neural Hub</span>
-                            <span className="text-[8px] mono text-cyan-500 font-bold uppercase tracking-widest mt-0.5">RaaZ.Khanal.os</span>
-                        </div>
-                    </div>
+			{/* top nav */}
+			<header
+				className={`fixed top-0 left-0 right-0 z-50 transition-[padding] duration-500 ${
+					scrolled ? "pt-3" : "pt-6"
+				}`}
+			>
+				<div className="mx-auto px-4 sm:px-6">
+					<div
+						className={`mx-auto flex items-center justify-between gap-3 glass rounded-2xl pl-3 pr-3 py-2 transition-[max-width] duration-500 ${
+							scrolled ? "max-w-3xl" : "max-w-5xl"
+						}`}
+					>
+						<div className="flex items-center gap-3 pl-1">
+							<div
+								className="w-8 h-8 rounded-xl flex items-center justify-center font-black text-[11px] text-[#04130c]"
+								style={{
+									background:
+										"linear-gradient(135deg, #36f9b3, #38bdf8 60%, #ff3d8b)",
+								}}
+							>
+								rk
+							</div>
+							<div className="hidden sm:flex flex-col leading-tight">
+								<span className="text-[12px] font-semibold text-white">
+									raazkhnl
+								</span>
+								<span className="mono text-[9.5px] text-slate-400">
+									computer engineer · np
+								</span>
+							</div>
+						</div>
 
-                    <nav className="flex items-center gap-8">
-                        <div className="hidden md:flex items-center gap-8 mono text-[11px] font-black">
-                            <button onClick={() => projectsRef.current?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Deployments</button>
-                            <button onClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })} className="text-slate-500 hover:text-white transition-colors uppercase tracking-[0.2em]">Bridge</button>
-                        </div>
-                        <div className="h-4 w-px bg-white/10 mx-1"></div>
-                        <div className="mono text-[10px] flex items-center gap-3">
-                            <span className="text-white font-bold">{currentTime}</span>
-                            <div className="flex items-center gap-1.5">
-                                <div className="w-1 h-1 bg-cyan-400 rounded-full glow-dot"></div>
-                                <span className="hidden xs:inline text-slate-500 font-bold">STABLE</span>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </header>
+						<nav className="flex items-center gap-1">
+							<NavLink id="stack" label="stack" />
+							<NavLink id="work" label="work" />
+							<NavLink id="contact" label="contact" alwaysShow />
 
-            {/* Main Container */}
-            <main className="pt-32 pb-32 px-4 sm:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 relative mt-12">
+							<div className="hidden sm:flex items-center gap-2 ml-2 pl-3 border-l border-white/10">
+								<span className="dot" />
+								<span className="mono text-[10.5px] text-slate-300 tabular-nums">
+									{hh}
+									<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>
+									{mm}
+									<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>
+									{ss}
+								</span>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</header>
 
-                {/* Left Control Bar */}
-                <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-32 h-fit">
-                    <section className="obsidian-card p-8 rounded-[2rem] relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-4 opacity-10 font-black text-4xl select-none">RAAZ</div>
+			<main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-20">
+				{/* hero */}
+				<section
+					id="home"
+					ref={heroRef}
+					className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 scroll-mt-28"
+				>
+					<Reveal className="lg:col-span-7">
+						<GlowCard className="glass rounded-[28px] p-7 sm:p-10 relative overflow-hidden">
+							<div
+								className="absolute -top-32 -right-32 w-72 h-72 rounded-full opacity-30 blur-3xl pointer-events-none"
+								style={{
+									background:
+										"radial-gradient(closest-side, rgba(54,249,179,0.55), transparent)",
+								}}
+							/>
+							<div
+								className="absolute -bottom-32 -left-32 w-72 h-72 rounded-full opacity-25 blur-3xl pointer-events-none"
+								style={{
+									background:
+										"radial-gradient(closest-side, rgba(255,61,139,0.45), transparent)",
+								}}
+							/>
 
-                        <div className="mb-10">
-                            <h1 className="text-7xl font-black tracking-tighter leading-[0.85] mb-4">
-                                RaaZ<br /><span className="text-cyan-400">KHANAL</span>
-                            </h1>
-                            <div className="flex items-center gap-2 mb-6">
-                                <div className="h-[2px] w-6 bg-cyan-400 rounded-full"></div>
-                                <p className="text-[10px] mono text-slate-500 font-bold uppercase tracking-[0.2em]">Computer Engineer / Full-Stack</p>
-                            </div>
-                            <p className="text-[15px] text-slate-400 leading-relaxed font-medium opacity-80 italic">
-                                Architecting intelligent systems from the heart of Nepal. Graduated IOE Pulchowk '24.
-                            </p>
-                        </div>
+							{/* floating avatar — top-right of hero card */}
+							<div className="absolute top-5 right-5 sm:top-6 sm:right-6 z-10">
+								<Avatar />
+							</div>
 
-                        {/* Social Bridge */}
-                        <div className="grid grid-cols-4 gap-2 mb-8">
-                            {[
-                                { icon: 'GH', link: RAJESH_DATA.socials.github, color: 'hover:text-white' },
-                                { icon: 'LI', link: RAJESH_DATA.socials.linkedin, color: 'hover:text-blue-400' },
-                                { icon: 'IG', link: 'https://instagram.com/raazkhnl', color: 'hover:text-pink-400' },
-                                { icon: 'BL', link: RAJESH_DATA.socials.website, color: 'hover:text-cyan-400' }
-                            ].map(soc => (
-                                <a key={soc.icon} href={soc.link} target="_blank" rel="noreferrer"
-                                    className={`h-10 obsidian-card flex items-center justify-center rounded-xl mono text-[11px] font-black transition-all ${soc.color} hover:bg-white/5`}>
-                                    {soc.icon}
-                                </a>
-                            ))}
-                        </div>
+							<div className="flex flex-wrap items-center gap-2 mb-7 pr-20 sm:pr-24">
+								<span className="chip">
+									<span className="dot" /> shipping at ird · gov of nepal
+								</span>
+								<span className="chip">📍 kathmandu, np</span>
+								<span className="chip">⌁ m.e. cybersec · pulchowk</span>
+							</div>
 
-                        <button
-                            onClick={() => window.open(RAJESH_DATA.socials.website)}
-                            className="w-full py-4 bg-cyan-500 text-black font-black text-[11px] rounded-2xl hover:brightness-110 active:scale-95 transition-all uppercase tracking-[0.3em] shadow-lg shadow-cyan-500/20"
-                        >
-                            Access_Resume_PDF
-                        </button>
-                    </section>
+							<h1 className="display text-[44px] sm:text-[64px] md:text-[80px] font-black leading-[0.95] tracking-tight">
+								<span className="text-grad-flow">building reliable</span>
+								<br />
+								<span className="relative inline-block">
+									<Typewriter
+										words={HERO_PHRASES}
+										className="text-grad-flow-mint"
+									/>
+									<svg
+										className="tape-underline absolute -bottom-1 left-0 w-full"
+										height="10"
+										viewBox="0 0 360 10"
+										fill="none"
+										aria-hidden
+									>
+										<path
+											d="M2 6 Q 60 2, 120 6 T 240 6 T 358 6"
+											stroke="url(#u-grad)"
+											strokeWidth="3"
+											strokeLinecap="round"
+										/>
+										<defs>
+											<linearGradient id="u-grad" x1="0" x2="1">
+												<stop offset="0%" stopColor="#36f9b3" />
+												<stop offset="60%" stopColor="#38bdf8" />
+												<stop offset="100%" stopColor="#ff3d8b" />
+											</linearGradient>
+										</defs>
+									</svg>
+								</span>
+							</h1>
 
-                    <Terminal onCommand={handleCommand} output={terminalOutput} />
-                </aside>
+							<p className="mt-6 max-w-xl text-[15px] sm:text-[16px] text-slate-300/90 leading-relaxed">
+								i'm <span className="text-white font-semibold">raazkhnl</span> —
+								a computer engineer crafting reliable, intelligent systems.
+								shipping tax tech at the inland revenue department by day,
+								chasing networks &amp; cybersecurity at pulchowk by night.
+							</p>
 
-                {/* Dynamic Content Stream */}
-                <div className="lg:col-span-8 space-y-16">
+							<div className="mt-8 flex flex-wrap items-center gap-3">
+								<MagneticButton
+									as="a"
+									href={RAAZKHNL.socials.website}
+									target="_blank"
+									rel="noreferrer"
+									className="btn-primary"
+								>
+									view resume
+									<svg
+										className="w-4 h-4"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2.4"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M5 12h14m0 0l-6-6m6 6l-6 6"
+										/>
+									</svg>
+								</MagneticButton>
+								<MagneticButton
+									onClick={() =>
+										contactRef.current?.scrollIntoView({ behavior: "smooth" })
+									}
+									className="btn-ghost"
+								>
+									say hi
+								</MagneticButton>
+								<button
+									onClick={copyEmail}
+									className="hidden sm:inline-flex mono text-[12px] text-slate-400 hover:text-white transition pl-2 items-center gap-1.5"
+								>
+									{emailCopied ? "✓ copied" : RAAZKHNL.socials.email}
+								</button>
+							</div>
 
-                    {/* Section 01: Capabilities */}
-                    <section>
-                        <div className="flex items-center gap-4 mb-10">
-                            <div className="w-1 h-3 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">01_Neural_Matrix</h2>
-                            <div className="h-px flex-1 bg-white/5"></div>
-                        </div>
-                        <BentoGrid />
-                    </section>
+							<div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-md">
+								{[
+									{ k: "5+", v: "years coding" },
+									{ k: "25+", v: "projects shipped" },
+									{ k: "∞", v: "cups of chiya" },
+								].map((s) => (
+									<div key={s.v} className="glass-tight rounded-2xl p-3 sm:p-4">
+										<div className="text-2xl sm:text-3xl font-black text-grad-mint">
+											{s.k}
+										</div>
+										<div className="mono text-[10px] text-slate-400 mt-1">
+											{s.v}
+										</div>
+									</div>
+								))}
+							</div>
+						</GlowCard>
+					</Reveal>
 
-                    {/* Section 02: Deployments */}
-                    <section ref={projectsRef} className="scroll-mt-32">
-                        <div className="flex items-center gap-4 mb-10">
-                            <div className="w-1 h-3 bg-cyan-500 rounded-full"></div>
-                            <h2 className="mono text-[11px] font-black text-slate-500 uppercase tracking-[0.5em]">02_Live_Deployments</h2>
-                            <div className="h-px flex-1 bg-white/5"></div>
-                        </div>
-                        <div className="obsidian-card p-2 sm:p-4 rounded-[3rem]">
-                            <ProjectGallery />
-                        </div>
-                    </section>
+					<div className="lg:col-span-5 flex flex-col gap-6">
+						<Reveal delay={120}>
+							<GlowCard className="glass rounded-[28px] p-6 sm:p-7">
+								<div className="flex items-center justify-between mb-5">
+									<span className="eyebrow">find me</span>
+									<span className="mono text-[10px] text-slate-500">
+										/socials
+									</span>
+								</div>
+								<div className="grid grid-cols-2 gap-3">
+									{[
+										{
+											label: "github",
+											sub: "@raazkhnl",
+											href: RAAZKHNL.socials.github,
+											accent: "linear-gradient(135deg,#36f9b3,#0e766e)",
+										},
+										{
+											label: "linkedin",
+											sub: "in/raazkhnl",
+											href: RAAZKHNL.socials.linkedin,
+											accent: "linear-gradient(135deg,#38bdf8,#1e3a8a)",
+										},
+										{
+											label: "website",
+											sub: "khanalrajesh.com.np",
+											href: RAAZKHNL.socials.website,
+											accent: "linear-gradient(135deg,#ff3d8b,#831843)",
+										},
+										{
+											label: "blogspot",
+											sub: "raazkhnl.blogspot.com",
+											href: RAAZKHNL.socials.blogspot,
+											accent: "linear-gradient(135deg,#fbbf24,#7c2d12)",
+										},
+									].map((s) => (
+										<a
+											key={s.label}
+											href={s.href}
+											target="_blank"
+											rel="noreferrer"
+											className="group glass-tight rounded-2xl p-4 transition"
+											style={{ borderColor: "rgba(255,255,255,0.05)" }}
+										>
+											<div className="flex items-center gap-3">
+												<div
+													className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-[10px] font-black uppercase"
+													style={{ background: s.accent }}
+												>
+													{s.label.slice(0, 2)}
+												</div>
+												<div className="min-w-0">
+													<div className="text-[12px] font-semibold text-white">
+														{s.label}
+													</div>
+													<div className="mono text-[10px] text-slate-400 truncate">
+														{s.sub}
+													</div>
+												</div>
+												<svg
+													className="ml-auto w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="2"
+												>
+													<path
+														strokeLinecap="round"
+														strokeLinejoin="round"
+														d="M7 17L17 7M9 7h8v8"
+													/>
+												</svg>
+											</div>
+										</a>
+									))}
+								</div>
+								<div className="mt-5 flex flex-wrap gap-2">
+									<button onClick={copyEmail} className="chip chip-pink">
+										{emailCopied ? "✓ email copied" : "copy email"}
+									</button>
+									<span className="chip">
+										press{" "}
+										<span className="px-1 py-0.5 rounded-md bg-white/10 text-white">
+											/
+										</span>{" "}
+										for terminal
+									</span>
+								</div>
+							</GlowCard>
+						</Reveal>
 
-                    {/* Section 03: Registry & Bridge */}
-                    <section id="registry-section" className="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-mt-32">
-                        <div className="obsidian-card p-10 rounded-[2.5rem] flex flex-col h-full">
-                            <h3 className="mono text-[11px] font-black text-cyan-400 mb-10 uppercase tracking-[0.4em] flex items-center gap-3">
-                                <div className="w-2 h-2 rounded bg-cyan-500 glow-dot"></div>Registry.log
-                            </h3>
-                            <div className="space-y-10 flex-1">
-                                {EXPERIENCES.map((exp, i) => (
-                                    <div key={i} className="group relative pl-8 border-l border-white/5">
-                                        <div className="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-slate-900 border border-white/10 group-hover:bg-cyan-500 group-hover:border-cyan-400 transition-all"></div>
-                                        <span className="text-[9px] mono text-slate-600 font-black mb-1 block">{exp.period}</span>
-                                        <h4 className="text-[15px] font-black text-white group-hover:text-cyan-400 transition-colors uppercase">{exp.role}</h4>
-                                        <p className="text-[11px] text-cyan-400/50 mono font-bold mb-3">{exp.company}</p>
-                                        <p className="text-[12px] text-slate-400 leading-relaxed line-clamp-2">{exp.description}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+						<Reveal delay={200}>
+							<Terminal
+								sections={{
+									home: heroRef,
+									stack: stackRef,
+									work: workRef,
+									contact: contactRef,
+								}}
+								onTheme={setAccent}
+								onMatrixToggle={() => setMatrixOn((v) => !v)}
+							/>
+						</Reveal>
+					</div>
+				</section>
 
-                        <div ref={contactRef} className="scroll-mt-32">
-                            <ContactForm />
-                        </div>
-                    </section>
+				{/* stack */}
+				<section id="stack" ref={stackRef} className="mt-24 sm:mt-28 scroll-mt-28">
+					<Reveal>
+						<div className="flex items-end justify-between mb-8">
+							<div>
+								<span className="eyebrow">01 · stack</span>
+								<h2 className="display mt-3 text-3xl sm:text-5xl font-black tracking-tight">
+									tools i <span className="text-grad-mint">vibe</span> with
+								</h2>
+							</div>
+							<span className="hidden md:inline mono text-[11px] text-slate-500">
+								/stack-matrix
+							</span>
+						</div>
+					</Reveal>
+					<BentoGrid />
+				</section>
 
-                </div>
-            </main>
+				{/* work */}
+				<section id="work" ref={workRef} className="mt-24 sm:mt-28 scroll-mt-28">
+					<Reveal>
+						<div className="flex items-end justify-between mb-8">
+							<div>
+								<span className="eyebrow">02 · selected work</span>
+								<h2 className="display mt-3 text-3xl sm:text-5xl font-black tracking-tight">
+									things i <span className="text-grad-pink">shipped</span>
+								</h2>
+							</div>
+							<a
+								href={RAAZKHNL.socials.github}
+								target="_blank"
+								rel="noreferrer"
+								className="hidden md:inline-flex chip chip-pink"
+							>
+								see all on github →
+							</a>
+						</div>
+					</Reveal>
+					<ProjectGallery />
+				</section>
 
-            {/* System Status Ticker (Responsive Footer) */}
-            <footer className="fixed bottom-0 left-0 w-full z-50 bg-[#050505]/80 backdrop-blur-2xl border-t border-white/5 py-3">
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 glow-dot"></div>
-                            <span className="mono text-[9px] font-black text-white hover:text-cyan-400 transition-colors tracking-widest uppercase">System_Active</span>
-                        </div>
-                        <div className="hidden md:flex items-center gap-6 opacity-40">
-                            <span className="mono text-[9px] font-bold text-slate-500 tracking-tighter uppercase">Power: {battery}</span>
-                            <span className="mono text-[9px] font-bold text-slate-500 tracking-tighter uppercase">Latency: {latency}ms</span>
-                        </div>
-                    </div>
+				{/* timeline + contact */}
+				<section className="mt-24 sm:mt-28 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+					<Reveal>
+						<GlowCard className="glass rounded-[28px] p-7 sm:p-9 h-full">
+							<span className="eyebrow">03 · timeline</span>
+							<h3 className="display mt-3 text-2xl sm:text-3xl font-black tracking-tight mb-8">
+								chapters so far
+							</h3>
+							<ol className="relative space-y-7">
+								<span
+									className="absolute left-[7px] top-1 bottom-1 w-px"
+									style={{
+										background:
+											"linear-gradient(to bottom, rgba(54,249,179,0.5), rgba(255,61,139,0.4) 60%, transparent)",
+									}}
+								/>
+								{EXPERIENCES.map((exp, i) => (
+									<li key={i} className="relative pl-7 group">
+										<span className="absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border border-white/10 bg-[#0a0a0d] flex items-center justify-center">
+											<span
+												className="w-1.5 h-1.5 rounded-full"
+												style={{
+													background:
+														"linear-gradient(135deg, #36f9b3, #ff3d8b)",
+													transition:
+														"transform 280ms cubic-bezier(0.16,1,0.3,1)",
+												}}
+											/>
+										</span>
+										<div className="mono text-[10px] text-slate-500 mb-1">
+											{exp.period}
+										</div>
+										<div className="text-[15px] font-semibold text-white">
+											{exp.role}
+										</div>
+										<div
+											className="mono text-[11px] mb-2"
+											style={{ color: "#6ee7b7" }}
+										>
+											{exp.company}
+										</div>
+										<p className="text-[13px] text-slate-400 leading-relaxed">
+											{exp.description}
+										</p>
+									</li>
+								))}
+							</ol>
+						</GlowCard>
+					</Reveal>
 
-                    <div className="flex-1 max-w-xl mx-12 hidden lg:block overflow-hidden relative">
-                        <div className="flex whitespace-nowrap animate-marquee-fast mono text-[8px] text-slate-500 gap-16 items-center">
-                            <span>// SKILLS: REACT_NEXT_PYTHON_ML_AWS_IOT_NLP_EXPRESS_DJANGO_LARAVEL_TYPESCRIPT //</span>
-                            <span>// ORIGIN: KTM_IOE_PULCHOWK_NEPAL //</span>
-                            <span>// STATUS: READY_FOR_DEPLOYMENT //</span>
-                            <span>// SKILLS: REACT_NEXT_PYTHON_ML_AWS_IOT_NLP_EXPRESS_DJANGO_LARAVEL_TYPESCRIPT //</span>
-                            <span>// ORIGIN: KTM_IOE_PULCHOWK_NEPAL //</span>
-                        </div>
-                    </div>
+					<Reveal delay={120}>
+						<div id="contact" ref={contactRef as never} className="scroll-mt-28">
+							<ContactForm />
+						</div>
+					</Reveal>
+				</section>
+			</main>
 
-                    <div className="flex items-center gap-4">
-                        <p className="mono text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] hidden sm:block">© 2024 RaaZ.os</p>
-                        <div className="w-1.5 h-1.5 rounded-full bg-white opacity-10"></div>
-                    </div>
-                </div>
-            </footer>
-
-        </div>
-    );
+			{/* footer — minimal, no marquee */}
+			<footer className="relative z-10 border-t border-white/5 bg-[#050507]/80 backdrop-blur-md">
+				<div className="px-4 sm:px-6 py-6 max-w-7xl mx-auto flex flex-col sm:flex-row items-center sm:items-center justify-between gap-3 mono text-[10.5px] text-slate-500">
+					<span>
+						made with{" "}
+						<span aria-hidden style={{ color: "#ff3d8b" }}>
+							ꨄ︎
+						</span>
+						<span className="sr-only">love</span> by{" "}
+						<a
+							href={RAAZKHNL.socials.github}
+							target="_blank"
+							rel="noreferrer"
+							className="text-white hover:text-[#36f9b3] transition"
+						>
+							@raazkhnl
+						</a>
+					</span>
+					<span className="hidden sm:inline">
+						shortcuts:{" "}
+						<kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+							/
+						</kbd>{" "}
+						terminal ·{" "}
+						<kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+							g h
+						</kbd>{" "}
+						home ·{" "}
+						<kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+							g w
+						</kbd>{" "}
+						work ·{" "}
+						<kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10">
+							g c
+						</kbd>{" "}
+						contact
+					</span>
+				</div>
+			</footer>
+		</div>
+	);
 };
+
+/**
+ * Anchor-based nav link. Updates the URL with `#<id>`, lets the browser
+ * handle smooth-scroll (via html { scroll-behavior: smooth }) and adds an
+ * entry to history so Back returns to the previous section/route.
+ */
+const NavLink: React.FC<{
+	id: string;
+	label: string;
+	alwaysShow?: boolean;
+}> = ({ id, label, alwaysShow }) => (
+	<a
+		href={`#${id}`}
+		className={`${
+			alwaysShow ? "" : "hidden md:inline-flex"
+		} px-3 py-2 rounded-lg text-[12px] text-slate-300 hover:text-white hover:bg-white/5 transition`}
+	>
+		{label}
+	</a>
+);
 
 export default Home;
