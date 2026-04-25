@@ -4,7 +4,7 @@ personal portfolio for **Rajesh Khanal** ([@raazkhnl](https://github.com/raazkhn
 
 dark × gen-z aesthetic with a working in-browser terminal you can actually drive.
 
-> live: https://raazkhnl.github.io/raazkhnl_hub/
+> live: https://khanalrajesh.com.np (also reachable at https://raazkhnl.github.io/raazkhnl_hub/, which redirects to the custom domain)
 
 ---
 
@@ -21,14 +21,16 @@ no client-state lib, no animation lib — motion is hand-tuned css with `Interse
 
 ```bash
 npm run dev        # vite dev @ http://localhost:3000/  (clean URLs)
-npm run build      # production build (base = /raazkhnl_hub/)
+npm run build      # production build (base = /, served from custom domain root)
 npm run preview    # preview the production build
 npm run deploy     # build + push dist/ → gh-pages branch
 ```
 
-`postbuild` copies `dist/index.html` → `dist/404.html` so deep links don't 404 on GitHub Pages (e.g. `…/raazkhnl_hub/project/zomec` falls through to the SPA).
+`postbuild` copies `dist/index.html` → `dist/404.html` so deep links don't 404 on GitHub Pages (e.g. `khanalrajesh.com.np/project/zomec` falls through to the SPA).
 
-`vite.config.ts` sets `base` conditionally: `/` in dev for clean URLs, `/raazkhnl_hub/` only on build. `BrowserRouter` reads its `basename` from `import.meta.env.BASE_URL`, so the same code runs identically in dev and on Pages.
+`vite.config.ts` sets `base: '/'`. The site is served from the **root** of the custom domain (`khanalrajesh.com.np`), so assets resolve from `/` in both dev and prod. `BrowserRouter` reads its `basename` from `import.meta.env.BASE_URL` (`/`), so routes are clean (`/`, `/project/<id>`).
+
+`public/CNAME` contains the custom domain — Vite copies it into `dist/` and `gh-pages -d dist` publishes it, telling GitHub Pages to serve at `khanalrajesh.com.np`. The `raazkhnl.github.io/raazkhnl_hub/` URL keeps working: GitHub auto-301s it to the custom domain.
 
 ## structure
 
@@ -179,19 +181,21 @@ npm run deploy
 
 what happens, in order:
 1. `predeploy` runs `npm run build`
-2. `vite build` produces `dist/` with `base=/raazkhnl_hub/`
-3. `postbuild` copies `dist/index.html` → `dist/404.html` (SPA fallback)
+2. `vite build` produces `dist/` with `base=/` and copies `public/*` (incl. `CNAME`) into it
+3. `postbuild` copies `dist/index.html` → `dist/404.html` (SPA fallback for deep links)
 4. `gh-pages -d dist` pushes `dist/` to the `gh-pages` branch
-5. GitHub Pages serves from `https://raazkhnl.github.io/raazkhnl_hub/`
+5. GitHub Pages reads `dist/CNAME` and serves the site at `https://khanalrajesh.com.np`
+6. Visits to `https://raazkhnl.github.io/raazkhnl_hub/` 301-redirect to the custom domain
 
-ensure your repo's **Settings → Pages → Source** is set to the `gh-pages` branch (root). On first deploy it may take 1–2 minutes for Pages to publish.
+ensure your repo's **Settings → Pages → Source** is set to the `gh-pages` branch (root) and **Custom domain** is set to your domain (or just rely on the `CNAME` file). DNS for the apex domain should `ALIAS`/`ANAME`/`A`-record to GitHub's pages IPs (185.199.108.153, .109.153, .110.153, .111.153); for `www`, `CNAME` to `raazkhnl.github.io`. Enforce HTTPS in Pages settings once the domain validates.
 
 if you fork this for your own portfolio:
-1. update `package.json#homepage` and `vite.config.ts#base` to your repo path
-2. update canonical URL in `index.html` and `public/sitemap.xml`
-3. drop your photo into `public/raazkhnl.png` (any 500×500 PNG works), or rename the file and update `Avatar.tsx#src` + the favicon link
-4. update `RAAZKHNL` in `constants.tsx` with your details
-5. swap the web3forms `ACCESS_KEY` in `components/ContactForm.tsx`
+1. update `package.json#homepage` to your domain
+2. replace `public/CNAME` with your domain (or delete it if you're using the default `*.github.io/<repo>/` URL — in that case set `vite.config.ts` base back to `/<repo>/`)
+3. update the canonical URL, OG/Twitter URLs in `index.html`, and `loc` entries in `public/sitemap.xml`
+4. drop your photo into `public/raazkhnl.png` (any 500×500 PNG works), or rename the file and update `Avatar.tsx#src`
+5. update `RAAZKHNL` in `constants.tsx` with your details
+6. swap the web3forms `ACCESS_KEY` in `components/ContactForm.tsx`
 
 ## license
 
