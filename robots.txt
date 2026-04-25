@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://raazkhnl.github.io/raazkhnl_hub/sitemap.xml
+Sitemap: https://khanalrajesh.com.np/sitemap.xml
