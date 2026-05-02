@@ -7,6 +7,34 @@
 		<meta name="theme-color" content="#050507" />
 		<meta name="color-scheme" content="dark" />
 
+		<!--
+			Content-Security-Policy — defense-in-depth against HTML/JS injection at any
+			proxy/CDN layer (e.g. a compromised Cloudflare Worker). Inline scripts must
+			match a sha256 hash; eval() is forbidden (no 'unsafe-eval'); fetch/XHR is
+			restricted to first-party + the contact-form endpoint.
+
+			IMPORTANT: if you edit either inline JSON-LD block below, recompute its
+			sha256 and update the hash here. To recompute, run from the repo root:
+				node -e "const fs=require('fs'),c=require('crypto');const html=fs.readFileSync('index.html','utf8');const re=/<scr%ipt[^>]*>([\s\S]*?)<\/scr%ipt>/g.toString().replace(/%/g,'');for(const m of html.matchAll(new RegExp(re.slice(1,-2),'g'))){if(!m[1].trim())continue;console.log('sha256-'+c.createHash('sha256').update(m[1],'utf8').digest('base64'))}"
+		-->
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="
+				default-src 'none';
+				script-src 'self' 'sha256-hcdE+AQRNKaWsopdtVVeR/wDJgCCYIVE2lv1pXYPYz4=' 'sha256-b0ZBHub6CifZT5j4RTsm103yNrhSxJutO2n3DjLdvRs=';
+				style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+				font-src 'self' https://fonts.gstatic.com data:;
+				img-src 'self' data: https:;
+				connect-src 'self' https://api.web3forms.com;
+				manifest-src 'self';
+				base-uri 'self';
+				form-action 'self' https://api.web3forms.com;
+				frame-ancestors 'none';
+				upgrade-insecure-requests;
+			"
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+
 		<!-- Primary SEO -->
 		<title>Rajesh Khanal · Computer Engineer · Full-stack · @raazkhnl</title>
 		<meta

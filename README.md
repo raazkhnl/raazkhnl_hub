@@ -168,6 +168,7 @@ reusable utilities: `.stage`, `.scanlines`, `.grain`, `.glass`, `.glass-tight`, 
 - form input goes straight to web3forms; no plaintext storage.
 - `localStorage` / `sessionStorage` only hold UI state (theme, terminal history, boot flag) — no PII or secrets.
 - the web3forms `access_key` is intentionally client-side (per their docs); rotate it via `components/ContactForm.tsx#ACCESS_KEY` if needed.
+- a strict `Content-Security-Policy` is set as a `<meta http-equiv>` in `index.html`: `default-src 'none'`, no `'unsafe-eval'`, no `'unsafe-inline'` for scripts (the two inline JSON-LD blocks are allowed by sha256 hash), `connect-src` allowlists only the contact endpoint, `frame-ancestors 'none'`. This is defense-in-depth against script injection at any proxy/CDN layer (e.g. a Cloudflare Worker that rewrites HTML). If you edit either JSON-LD block, recompute its hash and update the policy — see the comment above the meta tag.
 
 ## contact form
 
