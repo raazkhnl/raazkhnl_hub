@@ -53,8 +53,12 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+    /* `clip` (not `hidden`) prevents horizontal overflow without promoting
+       <body> to a scroll container — keeps <html> as the principal scroller
+       so `html { scroll-behavior: smooth }` (in index.html) governs anchor
+       jumps. With `hidden`, browsers force overflow-y to auto and smooth
+       scroll silently breaks. */
+    overflow-x: clip;
   }
 
   ::selection {

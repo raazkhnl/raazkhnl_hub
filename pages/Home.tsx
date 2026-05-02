@@ -94,7 +94,11 @@ const Home: React.FC = () => {
 		if (boot) {
 			t = window.setTimeout(() => {
 				setBoot(false);
-				try { sessionStorage.setItem(BOOTED_KEY, "1"); } catch { /* ignore */ }
+				try {
+					sessionStorage.setItem(BOOTED_KEY, "1");
+				} catch {
+					/* ignore */
+				}
 			}, 600);
 		}
 		return () => {
@@ -257,10 +261,20 @@ const Home: React.FC = () => {
 			</header>
 
 			<main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-20">
+				{/* SEO surface text — visible only to assistive tech & crawlers.*/}
+				<h1 className="sr-only">
+					Rajesh Khanal — Computer Engineer in Nepal · aka RaaZ Khanal. Computer
+					Engineer at the Inland Revenue Department, Government of Nepal. M.E.
+					Networks &amp; Cyber Security at Pulchowk Campus, Kathmandu.
+					Full-stack developer building reliable, intelligent systems with
+					React, TypeScript, Python and Machine Learning. (raazkhnl)
+				</h1>
+
 				{/* hero */}
 				<section
 					id="home"
 					ref={heroRef}
+					aria-label="About Rajesh Khanal"
 					className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 scroll-mt-28"
 				>
 					<Reveal className="lg:col-span-7">
@@ -293,7 +307,7 @@ const Home: React.FC = () => {
 								<span className="chip">⌁ m.e. cybersec · pulchowk</span>
 							</div>
 
-							<h1 className="display text-[44px] sm:text-[64px] md:text-[80px] font-black leading-[0.95] tracking-tight">
+							<h2 className="display text-[44px] sm:text-[64px] md:text-[80px] font-black leading-[0.95] tracking-tight">
 								<span className="text-grad-flow">building reliable</span>
 								<br />
 								<span className="relative inline-block">
@@ -323,7 +337,7 @@ const Home: React.FC = () => {
 										</defs>
 									</svg>
 								</span>
-							</h1>
+							</h2>
 
 							<p className="mt-6 max-w-xl text-[15px] sm:text-[16px] text-slate-300/90 leading-relaxed">
 								i'm <span className="text-white font-semibold">raazkhnl</span> —
@@ -497,7 +511,11 @@ const Home: React.FC = () => {
 				</section>
 
 				{/* stack */}
-				<section id="stack" ref={stackRef} className="mt-24 sm:mt-28 scroll-mt-28">
+				<section
+					id="stack"
+					ref={stackRef}
+					className="mt-24 sm:mt-28 scroll-mt-28"
+				>
 					<Reveal>
 						<div className="flex items-end justify-between mb-8">
 							<div>
@@ -515,7 +533,11 @@ const Home: React.FC = () => {
 				</section>
 
 				{/* work */}
-				<section id="work" ref={workRef} className="mt-24 sm:mt-28 scroll-mt-28">
+				<section
+					id="work"
+					ref={workRef}
+					className="mt-24 sm:mt-28 scroll-mt-28"
+				>
 					<Reveal>
 						<div className="flex items-end justify-between mb-8">
 							<div>
@@ -588,7 +610,11 @@ const Home: React.FC = () => {
 					</Reveal>
 
 					<Reveal delay={120}>
-						<div id="contact" ref={contactRef as never} className="scroll-mt-28">
+						<div
+							id="contact"
+							ref={contactRef as never}
+							className="scroll-mt-28"
+						>
 							<ContactForm />
 						</div>
 					</Reveal>
@@ -639,23 +665,35 @@ const Home: React.FC = () => {
 };
 
 /**
- * Anchor-based nav link. Updates the URL with `#<id>`, lets the browser
- * handle smooth-scroll (via html { scroll-behavior: smooth }) and adds an
- * entry to history so Back returns to the previous section/route.
+ * Anchor-based nav link. Scrolls programmatically with smooth behavior so
+ * the animation runs reliably across browsers regardless of which element
+ * ends up as the scroll container, then updates the URL hash so Back
+ * returns to the previous section/route. The native anchor href is kept as
+ * a no-JS fallback.
  */
 const NavLink: React.FC<{
 	id: string;
 	label: string;
 	alwaysShow?: boolean;
-}> = ({ id, label, alwaysShow }) => (
-	<a
-		href={`#${id}`}
-		className={`${
-			alwaysShow ? "" : "hidden md:inline-flex"
-		} px-3 py-2 rounded-lg text-[12px] text-slate-300 hover:text-white hover:bg-white/5 transition`}
-	>
-		{label}
-	</a>
-);
+}> = ({ id, label, alwaysShow }) => {
+	const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		const el = document.getElementById(id);
+		if (!el) return;
+		e.preventDefault();
+		el.scrollIntoView({ behavior: "smooth", block: "start" });
+		history.pushState(null, "", `#${id}`);
+	};
+	return (
+		<a
+			href={`#${id}`}
+			onClick={onClick}
+			className={`${
+				alwaysShow ? "" : "hidden md:inline-flex"
+			} px-3 py-2 rounded-lg text-[12px] text-slate-300 hover:text-white hover:bg-white/5 transition`}
+		>
+			{label}
+		</a>
+	);
+};
 
 export default Home;
