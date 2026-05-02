@@ -349,7 +349,7 @@ const Home: React.FC = () => {
 							<div className="mt-8 flex flex-wrap items-center gap-3">
 								<MagneticButton
 									as="a"
-									href={RAAZKHNL.socials.website}
+									href={RAAZKHNL.socials.resume}
 									target="_blank"
 									rel="noreferrer"
 									className="btn-primary"

@@ -5,6 +5,7 @@
  * Every project link points to a real public repo on github.com/raazkhnl;
  * if you remove or rename a repo, update the entry here so the link stays valid.
  */
+import { resume } from "react-dom/server";
 import { Project, Experience, SkillCategory } from "./types";
 
 export const RAAZKHNL = {
@@ -23,6 +24,8 @@ export const RAAZKHNL = {
 		phone: "+977-9863244500",
 		website: "https://khanalrajesh.com.np",
 		blogspot: "https://raazkhnl.blogspot.com",
+		resume:
+			"https://drive.google.com/file/d/1NlHceRr-VpxUyUzdX0nhSfbaG_O7blH0/view",
 	},
 };
 
