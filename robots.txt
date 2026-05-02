@@ -1,4 +1,24 @@
+# https://khanalrajesh.com.np — Rajesh Khanal (RaaZ Khanal · raazkhnl)
+# Computer Engineer · Kathmandu, Nepal
 User-agent: *
 Allow: /
+Disallow:
+
+# Be explicit for the major crawlers — some heuristics differ between them
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Don't waste crawl budget on the build manifest
+Disallow: /assets/
+Disallow: /*.map$
 
 Sitemap: https://khanalrajesh.com.np/sitemap.xml

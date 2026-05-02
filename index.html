@@ -21,7 +21,7 @@
 			http-equiv="Content-Security-Policy"
 			content="
 				default-src 'none';
-				script-src 'self' 'sha256-hcdE+AQRNKaWsopdtVVeR/wDJgCCYIVE2lv1pXYPYz4=' 'sha256-b0ZBHub6CifZT5j4RTsm103yNrhSxJutO2n3DjLdvRs=';
+				script-src 'self' 'sha256-T0GP1ZJ254zMMnmFg9eYk/Bpq5aOO2hsfPUUvNPaW7Q=' 'sha256-kG29oEDyPDFM3FJv9/usj7UfGvw0BPKsnu4pWtsRXGo=' 'sha256-qutxApw9zDykU/0oKR9ev3VyuMJJ15xt33HwGwduxic=' 'sha256-8waXjSkcOWXCk6j3bjqin2nTlQvIAlyRMTC0N9khDd8=' 'sha256-rYNk2+razR+Obif1Nta2RtD1AyszmRbX0izaUHjB69Q=';
 				style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
 				font-src 'self' https://fonts.gstatic.com data:;
 				img-src 'self' data: https:;
@@ -36,19 +36,29 @@
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 
 		<!-- Primary SEO -->
-		<title>Rajesh Khanal · Computer Engineer · Full-stack · @raazkhnl</title>
+		<title>Rajesh Khanal (RaaZ Khanal) — Computer Engineer · Nepal · @raazkhnl</title>
 		<meta
 			name="description"
-			content="Rajesh Khanal (raazkhnl) — Computer Engineer at the Inland Revenue Department, Gov of Nepal. M.E. Networks & Cyber Security at Pulchowk Campus. Building reliable, intelligent systems from Kathmandu."
+			content="Rajesh Khanal — also known as RaaZ Khanal or raazkhnl. Computer Engineer at the Inland Revenue Department, Government of Nepal. M.E. Networks & Cyber Security at Pulchowk Campus, Kathmandu. Full-stack developer building reliable, intelligent systems with React, TypeScript, Python and ML."
 		/>
 		<meta
 			name="keywords"
-			content="Rajesh Khanal, raazkhnl, Computer Engineer Nepal, Pulchowk Campus, IRD Nepal, Networks Cybersecurity, Full Stack Developer Nepal, React, TypeScript, Machine Learning, Python, Portfolio"
+			content="Rajesh Khanal, RaaZ Khanal, raazkhnl, Computer Engineer Nepal, Software Engineer Nepal, Full Stack Developer Nepal, Pulchowk Campus, IOE Pulchowk, IRD Nepal, Inland Revenue Department, Networks and Cyber Security, Kathmandu Developer, React Developer Nepal, TypeScript, Python, Machine Learning Nepal, AI Nepal, Portfolio, Khanal Rajesh"
 		/>
-		<meta name="author" content="Rajesh Khanal" />
-		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="author" content="Rajesh Khanal (RaaZ Khanal)" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 		<meta name="googlebot" content="index, follow" />
+		<meta name="bingbot" content="index, follow" />
+
+		<!-- Geo signals — helps local SEO for "computer engineer Nepal / Kathmandu" -->
+		<meta name="geo.region" content="NP-3" />
+		<meta name="geo.placename" content="Kathmandu, Nepal" />
+		<meta name="geo.position" content="27.7172;85.3240" />
+		<meta name="ICBM" content="27.7172, 85.3240" />
+
 		<link rel="canonical" href="https://khanalrajesh.com.np/" />
+		<link rel="alternate" hreflang="en" href="https://khanalrajesh.com.np/" />
+		<link rel="alternate" hreflang="x-default" href="https://khanalrajesh.com.np/" />
 
 		<!-- Favicons — SVG mark matches the navbar logo. `/` is
 		     replaced by Vite per env: `/` in dev, `/raazkhnl_hub/` in build. -->
@@ -104,21 +114,51 @@
 				"@context": "https://schema.org",
 				"@type": "Person",
 				"name": "Rajesh Khanal",
-				"alternateName": "raazkhnl",
+				"givenName": "Rajesh",
+				"familyName": "Khanal",
+				"alternateName": ["RaaZ Khanal", "raazkhnl", "Raj Khanal"],
 				"jobTitle": "Computer Engineer",
+				"description": "Computer Engineer at the Inland Revenue Department, Government of Nepal. M.E. Networks & Cyber Security at Pulchowk Campus. Full-stack developer building reliable, intelligent systems from Kathmandu.",
+				"nationality": { "@type": "Country", "name": "Nepal" },
+				"birthPlace": {
+					"@type": "Place",
+					"address": {
+						"@type": "PostalAddress",
+						"addressLocality": "Daldale",
+						"addressRegion": "Nawalparasi East",
+						"addressCountry": "Nepal"
+					}
+				},
 				"worksFor": {
 					"@type": "GovernmentOrganization",
-					"name": "Inland Revenue Department, Government of Nepal"
+					"name": "Inland Revenue Department, Government of Nepal",
+					"url": "https://ird.gov.np"
 				},
 				"alumniOf": [
-					{ "@type": "CollegeOrUniversity", "name": "Pulchowk Campus (IOE)" }
+					{
+						"@type": "CollegeOrUniversity",
+						"name": "Pulchowk Campus, Institute of Engineering",
+						"alternateName": "IOE Pulchowk",
+						"sameAs": "https://pcampus.edu.np"
+					}
 				],
 				"address": {
 					"@type": "PostalAddress",
 					"addressLocality": "Kathmandu",
+					"addressRegion": "Bagmati Province",
 					"addressCountry": "Nepal"
 				},
+				"workLocation": {
+					"@type": "Place",
+					"address": {
+						"@type": "PostalAddress",
+						"addressLocality": "Kathmandu",
+						"addressCountry": "Nepal"
+					}
+				},
+				"knowsLanguage": ["English", "Nepali", "Hindi"],
 				"email": "mailto:raazkhnl@gmail.com",
+				"telephone": "+977-9863244500",
 				"url": "https://khanalrajesh.com.np/",
 				"image": "https://khanalrajesh.com.np/raazkhnl.png",
 				"sameAs": [
@@ -128,13 +168,21 @@
 				],
 				"knowsAbout": [
 					"Full Stack Development",
+					"Software Engineering",
 					"Machine Learning",
+					"Artificial Intelligence",
 					"Computer Vision",
-					"Networks",
+					"Computer Networks",
 					"Cyber Security",
 					"React",
 					"TypeScript",
-					"Python"
+					"Next.js",
+					"Python",
+					"Node.js",
+					"AWS",
+					"Linux",
+					"Tax Technology",
+					"Government Digital Services"
 				]
 			}
 		</script>
@@ -143,9 +191,66 @@
 			{
 				"@context": "https://schema.org",
 				"@type": "WebSite",
-				"name": "raazkhnl — neural hub",
+				"name": "Rajesh Khanal — Portfolio (raazkhnl · neural hub)",
+				"alternateName": ["raazkhnl", "RaaZ Khanal Portfolio"],
 				"url": "https://khanalrajesh.com.np/",
-				"author": { "@type": "Person", "name": "Rajesh Khanal" }
+				"inLanguage": "en",
+				"author": {
+					"@type": "Person",
+					"name": "Rajesh Khanal",
+					"alternateName": "RaaZ Khanal"
+				},
+				"publisher": {
+					"@type": "Person",
+					"name": "Rajesh Khanal"
+				}
+			}
+		</script>
+		<!-- JSON-LD: ProfilePage — primary entity for the landing route -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "ProfilePage",
+				"dateCreated": "2024-01-01",
+				"dateModified": "2026-05-02",
+				"mainEntity": {
+					"@type": "Person",
+					"name": "Rajesh Khanal",
+					"alternateName": ["RaaZ Khanal", "raazkhnl"],
+					"url": "https://khanalrajesh.com.np/"
+				}
+			}
+		</script>
+		<!-- JSON-LD: ItemList — featured projects, deep-linked into /project/<id> -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "ItemList",
+				"name": "Selected Work — Rajesh Khanal",
+				"itemListOrder": "https://schema.org/ItemListOrderAscending",
+				"itemListElement": [
+					{ "@type": "ListItem", "position": 1, "name": "Zomec.ai", "url": "https://khanalrajesh.com.np/project/zomec" },
+					{ "@type": "ListItem", "position": 2, "name": "Dasro.ca", "url": "https://khanalrajesh.com.np/project/dasro" },
+					{ "@type": "ListItem", "position": 3, "name": "Code4Pro", "url": "https://khanalrajesh.com.np/project/code4pro" },
+					{ "@type": "ListItem", "position": 4, "name": "NDHRMS", "url": "https://khanalrajesh.com.np/project/ndhrms" },
+					{ "@type": "ListItem", "position": 5, "name": "QueueLess", "url": "https://khanalrajesh.com.np/project/queueless" },
+					{ "@type": "ListItem", "position": 6, "name": "rk-word-editor", "url": "https://khanalrajesh.com.np/project/rk-word-editor" },
+					{ "@type": "ListItem", "position": 7, "name": "whatsup", "url": "https://khanalrajesh.com.np/project/whatsup" },
+					{ "@type": "ListItem", "position": 8, "name": "Neon Invasion", "url": "https://khanalrajesh.com.np/project/neon-invasion" },
+					{ "@type": "ListItem", "position": 9, "name": "Facial Attendance", "url": "https://khanalrajesh.com.np/project/facial-attendance" },
+					{ "@type": "ListItem", "position": 10, "name": "ABC App", "url": "https://khanalrajesh.com.np/project/abc-app" },
+					{ "@type": "ListItem", "position": 11, "name": "iNote", "url": "https://khanalrajesh.com.np/project/inote" }
+				]
+			}
+		</script>
+		<!-- JSON-LD: BreadcrumbList — root only (project pages add their own at runtime if ever rendered server-side) -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://khanalrajesh.com.np/" }
+				]
 			}
 		</script>
 
@@ -169,8 +274,8 @@
 				}
 			}
 		</style>
-		<script type="module" crossorigin src="/assets/index-D4lhuAPV.js"></script>
-		<link rel="stylesheet" crossorigin href="/assets/index-DmDCzTAl.css">
+		<script type="module" crossorigin src="/assets/index-D8jujF6O.js"></script>
+		<link rel="stylesheet" crossorigin href="/assets/index-Dl8AgTni.css">
 	</head>
 
 	<body>
@@ -181,20 +286,46 @@
 					padding: 32px;
 					color: #cbd5e1;
 					font-family: system-ui, sans-serif;
-					text-align: center;
+					max-width: 720px;
+					margin: 0 auto;
+					line-height: 1.6;
 				"
 			>
-				<h1>raazkhnl — Rajesh Khanal</h1>
-				<p>
-					Computer Engineer @ IRD, Gov of Nepal. M.E. Networks & Cyber Security
-					@ Pulchowk Campus.
+				<h1 style="font-size: 28px; margin: 0 0 8px 0">
+					Rajesh Khanal — Computer Engineer in Nepal
+				</h1>
+				<p style="color: #94a3b8; margin: 0 0 16px 0">
+					Also known as <strong>RaaZ Khanal</strong> · <strong>raazkhnl</strong>
 				</p>
 				<p>
-					This site uses JavaScript for interactive content. Please enable it,
-					or visit
-					<a href="https://github.com/raazkhnl" style="color: #36f9b3"
-						>github.com/raazkhnl</a
-					>.
+					Rajesh Khanal is a Computer Engineer at the Inland Revenue Department,
+					Government of Nepal. M.E. in Computer Engineering (Networks &amp; Cyber
+					Security) at Pulchowk Campus, IOE — B.E. Computer Engineering at IOE
+					Pulchowk (2024). Based in Kathmandu, Nepal.
+				</p>
+				<p>
+					Builds reliable, intelligent systems with React, TypeScript, Next.js,
+					Python, Node.js, Machine Learning and AWS.
+				</p>
+				<h2 style="font-size: 18px; margin-top: 24px">Selected work</h2>
+				<ul>
+					<li><a style="color: #36f9b3" href="/project/zomec">Zomec.ai</a> — AI-powered job matching</li>
+					<li><a style="color: #36f9b3" href="/project/dasro">Dasro.ca</a> — AI-enhanced job discovery</li>
+					<li><a style="color: #36f9b3" href="/project/code4pro">Code4Pro</a> — sensor-driven stress management</li>
+					<li><a style="color: #36f9b3" href="/project/ndhrms">NDHRMS</a> — Nepal Digital HR Management</li>
+					<li><a style="color: #36f9b3" href="/project/queueless">QueueLess</a> — multi-branch booking</li>
+					<li><a style="color: #36f9b3" href="/project/facial-attendance">Facial Attendance</a> — CV-based attendance</li>
+				</ul>
+				<h2 style="font-size: 18px; margin-top: 24px">Find me</h2>
+				<ul>
+					<li><a style="color: #36f9b3" href="https://github.com/raazkhnl">github.com/raazkhnl</a></li>
+					<li><a style="color: #36f9b3" href="https://linkedin.com/in/raazkhnl">linkedin.com/in/raazkhnl</a></li>
+					<li><a style="color: #36f9b3" href="https://raazkhnl.blogspot.com">raazkhnl.blogspot.com</a></li>
+					<li><a style="color: #36f9b3" href="mailto:raazkhnl@gmail.com">raazkhnl@gmail.com</a></li>
+				</ul>
+				<p style="margin-top: 24px; color: #64748b">
+					This site is interactive — please enable JavaScript for the full
+					experience.
 				</p>
 			</div>
 		</noscript>
