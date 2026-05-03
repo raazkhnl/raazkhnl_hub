@@ -221,14 +221,13 @@ const Home: React.FC = () => {
 						}`}
 					>
 						<div className="flex items-center gap-3 pl-1">
-							<div
-								className="w-8 h-8 rounded-xl flex items-center justify-center font-black text-[11px] text-[#04130c]"
-								style={{
-									background:
-										"linear-gradient(135deg, #36f9b3, #38bdf8 60%, #ff3d8b)",
-								}}
-							>
-								rk
+							<div className="relative w-9 h-9 rounded-xl overflow-hidden ring-1 ring-white/10 shadow-[0_4px_18px_-6px_rgba(54,249,179,0.55)]">
+								<img
+									src={`${import.meta.env.BASE_URL}icon.png`}
+									alt="raazkhnl"
+									className="w-full h-full object-cover"
+									draggable={false}
+								/>
 							</div>
 							<div className="hidden sm:flex flex-col leading-tight">
 								<span className="text-[12px] font-semibold text-white">
