@@ -196,7 +196,7 @@ const QUOTES = [
 	'"premature optimization is the root of all evil." — knuth',
 	'"talk is cheap. show me the code." — torvalds',
 	'"any fool can write code a computer understands. good programmers write code humans understand." — fowler',
-	'"the most damaging phrase in the language is: \'we\'ve always done it this way.\'" — hopper',
+	"\"the most damaging phrase in the language is: 'we've always done it this way.'\" — hopper",
 	'"first, solve the problem. then, write the code." — johnson',
 	'"programs must be written for people to read, and only incidentally for machines to execute." — abelson',
 	'"if you don\'t have time to do it right, when will you have time to do it over?" — wooden',
@@ -378,8 +378,7 @@ const Terminal: React.FC<TerminalProps> = ({
 		fallbackId: string,
 		label: string
 	) => {
-		const el =
-			sections?.[key]?.current ?? document.getElementById(fallbackId);
+		const el = sections?.[key]?.current ?? document.getElementById(fallbackId);
 		el?.scrollIntoView({ behavior: "smooth", block: "start" });
 		return label;
 	};
@@ -442,7 +441,7 @@ const Terminal: React.FC<TerminalProps> = ({
 					const targets = wanted
 						? SKILLS.filter((s) =>
 								targetCat ? s.category === targetCat : false
-							)
+						  )
 						: SKILLS;
 					if (!targets.length) {
 						out(`unknown category: ${wanted}. try: lang, ui, ops`, "err");
@@ -612,7 +611,9 @@ const Terminal: React.FC<TerminalProps> = ({
 						}
 					}
 					if (cwd === "skills") {
-						const found = SKILLS.find((s) => slugCategory(s.category) === fname);
+						const found = SKILLS.find(
+							(s) => slugCategory(s.category) === fname
+						);
 						if (found) {
 							writeLines([
 								`# ${found.category.toLowerCase()}`,
@@ -655,12 +656,16 @@ const Terminal: React.FC<TerminalProps> = ({
 						"├── skills/",
 						...SKILLS.map(
 							(s, i) =>
-								`│   ${i === SKILLS.length - 1 ? "└──" : "├──"} ${slugCategory(s.category)}`
+								`│   ${i === SKILLS.length - 1 ? "└──" : "├──"} ${slugCategory(
+									s.category
+								)}`
 						),
 						"└── timeline/",
 						...EXPERIENCES.map(
 							(_, i) =>
-								`    ${i === EXPERIENCES.length - 1 ? "└──" : "├──"} chapter_${i + 1}.txt`
+								`    ${i === EXPERIENCES.length - 1 ? "└──" : "├──"} chapter_${
+									i + 1
+								}.txt`
 						),
 					]);
 					break;
@@ -792,7 +797,9 @@ const Terminal: React.FC<TerminalProps> = ({
 					);
 					const chars = f.reduce((a, b) => a + b.length, 0);
 					out(
-						`${String(f.length).padStart(4)} ${String(words).padStart(4)} ${String(chars).padStart(4)} ${fname}`
+						`${String(f.length).padStart(4)} ${String(words).padStart(
+							4
+						)} ${String(chars).padStart(4)} ${fname}`
 					);
 					break;
 				}
@@ -803,7 +810,10 @@ const Terminal: React.FC<TerminalProps> = ({
 						break;
 					}
 					const pattern = arg.slice(0, space);
-					const fname = arg.slice(space + 1).trim().toLowerCase();
+					const fname = arg
+						.slice(space + 1)
+						.trim()
+						.toLowerCase();
 					const f = readRootFile(fname);
 					if (!f) {
 						out(`grep: no such file: ${fname}`, "err");
@@ -906,7 +916,16 @@ const Terminal: React.FC<TerminalProps> = ({
 					out(`command not found: ${cmd}. try \`help\`.`, "err");
 			}
 		},
-		[cwd, history, navigate, onMatrixToggle, onTheme, print, sections, allCommands]
+		[
+			cwd,
+			history,
+			navigate,
+			onMatrixToggle,
+			onTheme,
+			print,
+			sections,
+			allCommands,
+		]
 	);
 
 	/* keyboard handling for the input */
@@ -971,7 +990,7 @@ const Terminal: React.FC<TerminalProps> = ({
 
 	return (
 		<div
-			className="glass rounded-3xl overflow-hidden flex flex-col h-[420px] cursor-text"
+			className="glass rounded-3xl overflow-hidden flex flex-col h-[360px] cursor-text"
 			onClick={focusInput}
 			role="region"
 			aria-label="raazkhnl terminal"

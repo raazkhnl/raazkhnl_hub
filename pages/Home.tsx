@@ -276,8 +276,8 @@ const Home: React.FC = () => {
 					aria-label="About Rajesh Khanal"
 					className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 scroll-mt-28"
 				>
-					<Reveal className="lg:col-span-7">
-						<GlowCard className="glass rounded-[28px] p-7 sm:p-10 relative overflow-hidden">
+					<Reveal className="lg:col-span-7 h-full">
+						<GlowCard className="glass rounded-[28px] p-7 sm:p-10 relative overflow-hidden h-full">
 							<div
 								className="absolute -top-32 -right-32 w-72 h-72 rounded-full opacity-30 blur-3xl pointer-events-none"
 								style={{
@@ -309,7 +309,7 @@ const Home: React.FC = () => {
 							<h2 className="display text-[44px] sm:text-[64px] md:text-[80px] font-black leading-[0.95] tracking-tight">
 								<span className="text-grad-flow">building reliable</span>
 								<br />
-								<span className="relative inline-block">
+								<span className="relative inline-block text-[28px] sm:text-[48px] md:text-[64px]">
 									<Typewriter
 										words={HERO_PHRASES}
 										className="text-grad-flow-mint"
@@ -403,7 +403,7 @@ const Home: React.FC = () => {
 						</GlowCard>
 					</Reveal>
 
-					<div className="lg:col-span-5 flex flex-col gap-6">
+					<div className="lg:col-span-5 flex flex-col gap-6 h-full">
 						<Reveal delay={120}>
 							<GlowCard className="glass rounded-[28px] p-6 sm:p-7">
 								<div className="flex items-center justify-between mb-5">
@@ -494,7 +494,7 @@ const Home: React.FC = () => {
 							</GlowCard>
 						</Reveal>
 
-						<Reveal delay={200}>
+						<Reveal delay={200} className="flex-1 min-h-1">
 							<Terminal
 								sections={{
 									home: heroRef,
@@ -559,8 +559,8 @@ const Home: React.FC = () => {
 				</section>
 
 				{/* timeline + contact */}
-				<section className="mt-24 sm:mt-28 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-					<Reveal>
+				<section className="mt-24 sm:mt-28 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+					<Reveal className="h-full">
 						<GlowCard className="glass rounded-[28px] p-7 sm:p-9 h-full">
 							<span className="eyebrow">03 · timeline</span>
 							<h3 className="display mt-3 text-2xl sm:text-3xl font-black tracking-tight mb-8">
@@ -608,11 +608,11 @@ const Home: React.FC = () => {
 						</GlowCard>
 					</Reveal>
 
-					<Reveal delay={120}>
+					<Reveal delay={120} className="h-full">
 						<div
 							id="contact"
 							ref={contactRef as never}
-							className="scroll-mt-28"
+							className="scroll-mt-28 h-full"
 						>
 							<ContactForm />
 						</div>

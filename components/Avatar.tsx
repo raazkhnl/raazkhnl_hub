@@ -17,7 +17,7 @@ interface Props {
 const Avatar: React.FC<Props> = ({
 	src = `${import.meta.env.BASE_URL}raazkhnl.png`,
 	alt = "Rajesh Khanal - raazkhnl (avatar)",
-	sizeClass = "w-16 h-16 sm:w-20 sm:h-20",
+	sizeClass = "w-24 h-24 sm:w-28 sm:h-28",
 	label = "@raazkhnl",
 }) => {
 	const wrapRef = useRef<HTMLDivElement>(null);
